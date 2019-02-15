@@ -430,7 +430,7 @@ public class GUITemplate {
 					GameMessage gameMessage = new GameMessage();
 					gameMessage.setMessageType(MessageType.SPEED);
 					gameMessage.setContent(source.getValue() + "");
-					gameMessage.setId(txtId.getText());
+					gameMessage.setId(txtId_1.getText());
 					adminGUI.send(gameMessage);
 				}
 			}
@@ -446,7 +446,7 @@ public class GUITemplate {
 					GameMessage gameMessage = new GameMessage();
 					gameMessage.setMessageType(MessageType.SPEED);
 					gameMessage.setContent(source.getValue() + "");
-					gameMessage.setId(txtId.getText());
+					gameMessage.setId(txtId_2.getText());
 					adminGUI.send(gameMessage);
 				}
 			}
@@ -462,7 +462,7 @@ public class GUITemplate {
 					GameMessage gameMessage = new GameMessage();
 					gameMessage.setMessageType(MessageType.SPEED);
 					gameMessage.setContent(source.getValue() + "");
-					gameMessage.setId(txtId.getText());
+					gameMessage.setId(txtId_3.getText());
 					adminGUI.send(gameMessage);
 				}
 			}
