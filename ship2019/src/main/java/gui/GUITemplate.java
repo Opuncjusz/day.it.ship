@@ -473,6 +473,30 @@ public class GUITemplate {
 		btnNewGame.setBounds(1136, 146, 134, 38);
 		panel.add(btnNewGame);
 
+		JButton button_2 = new JButton("END GAME");
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GameMessage gameMessage = new GameMessage();
+				gameMessage.setMessageType(MessageType.END_GAME);
+				gameMessage.setId("admin");
+				adminGUI.send(gameMessage);
+			}
+		});
+		button_2.setBounds(875, 146, 134, 38);
+		panel.add(button_2);
+
+		JButton button_7 = new JButton("START GAME");
+		button_7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				GameMessage gameMessage = new GameMessage();
+				gameMessage.setMessageType(MessageType.START_GAME);
+				gameMessage.setId("admin");
+				adminGUI.send(gameMessage);
+			}
+		});
+		button_7.setBounds(700, 146, 134, 38);
+		panel.add(button_7);
+
 		btnConnect.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {

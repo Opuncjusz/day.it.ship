@@ -4,6 +4,8 @@ import websocket.to.GameMessage;
 
 interface GameService {
 
-	void sendSpeed(GameMessage message);
-	
+	void setSpeed(GameMessage message);
+
+	void startConnectionWithCar();
+
 }
