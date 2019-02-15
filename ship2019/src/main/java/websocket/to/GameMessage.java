@@ -1,6 +1,11 @@
 package websocket.to;
 
+import websocket.type.MessageType;
+
 public class GameMessage {
+
+	private MessageType messageType;
+
 	private String id;
 	private String content;
 
@@ -18,6 +23,14 @@ public class GameMessage {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public MessageType getMessageType() {
+		return messageType;
+	}
+
+	public void setMessageType(MessageType messageType) {
+		this.messageType = messageType;
 	}
 
 }

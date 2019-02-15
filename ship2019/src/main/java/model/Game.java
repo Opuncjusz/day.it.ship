@@ -1,18 +1,17 @@
 package model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Game {
-	
+
 	private GameStatus gameStatus;
-	private Set<Player> players;
-	
+	private Map<String, Player> players;
+
 	public Game() {
 		gameStatus = GameStatus.PREPAIR;
-		players = new HashSet<Player>();
+		players = new HashMap<String, Player>();
 	}
-
 
 	public GameStatus getGameStatus() {
 		return gameStatus;
@@ -22,11 +21,11 @@ public class Game {
 		this.gameStatus = gameStatus;
 	}
 
-	public Set<Player> getPlayers() {
+	public Map<String, Player> getPlayers() {
 		return players;
 	}
 
-	public void setPlayers(Set<Player> players) {
+	public void setPlayers(Map<String, Player> players) {
 		this.players = players;
 	}
 

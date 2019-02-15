@@ -25,6 +25,7 @@ public abstract class Endpoint extends WebSocketServer {
 	@Override
 	public void onError(WebSocket webSocket, Exception exception) {
 		LOGGER.error(exception.getMessage());
+		exception.printStackTrace();
 	}
 
 	@Override
