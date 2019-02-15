@@ -10,10 +10,16 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.text.DefaultCaret;
 
 import websocket.to.GameMessage;
 import websocket.type.MessageType;
@@ -33,6 +39,17 @@ public class GUITemplate {
 	private JTextField txtId_3;
 	private JTextField txtPlayer_3;
 	private JTextArea textArea;
+	private JLabel label;
+	private JLabel label_1;
+	private JLabel label_2;
+	private JLabel label_3;
+	private JButton btnNewGame;
+	private JButton btnAddPlayer;
+	private JButton button;
+	private JButton button_5;
+	private JButton button_10;
+	private JButton button_7;
+	private JButton button_2;
 
 	public static GUITemplate window;
 	public static AdminGUI adminGUI;
@@ -110,7 +127,8 @@ public class GUITemplate {
 		panel_1.add(panel_2);
 		panel_2.setLayout(null);
 
-		JButton btnAddPlayer = new JButton("ADD PLAYER");
+		btnAddPlayer = new JButton("ADD PLAYER");
+		btnAddPlayer.setEnabled(false);
 		btnAddPlayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				GameMessage gameMessage = new GameMessage();
@@ -118,6 +136,9 @@ public class GUITemplate {
 				gameMessage.setContent(txtPlayer.getText());
 				gameMessage.setId(txtId.getText());
 				adminGUI.send(gameMessage);
+
+				getButton_7().setEnabled(true);
+				getBtnAddPlayer().setEnabled(false);
 			}
 		});
 		btnAddPlayer.setBounds(15, 57, 330, 29);
@@ -139,68 +160,40 @@ public class GUITemplate {
 		panel_2.add(txtPlayer);
 		txtPlayer.setColumns(10);
 
-		JButton btnUp = new JButton("-50");
-		btnUp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameMessage gameMessage = new GameMessage();
-				gameMessage.setMessageType(MessageType.SPEED);
-				gameMessage.setContent("-50");
-				gameMessage.setId(txtId.getText());
-				adminGUI.send(gameMessage);
-			}
-		});
-		btnUp.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		btnUp.setBounds(15, 102, 61, 29);
-		panel_2.add(btnUp);
+		JSlider slider = new JSlider();
+		slider.addChangeListener(new ChangeListener() {
 
-		JButton btnDown = new JButton("STOP");
-		btnDown.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		btnDown.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameMessage gameMessage = new GameMessage();
-				gameMessage.setMessageType(MessageType.SPEED);
-				gameMessage.setContent("0");
-				gameMessage.setId(txtId.getText());
-				adminGUI.send(gameMessage);
-			}
-		});
-		btnDown.setBounds(101, 102, 61, 29);
-		panel_2.add(btnDown);
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider) e.getSource();
+				if (source.getValueIsAdjusting()) {
+					getLabel().setText(source.getValue() + "");
 
-		JButton btnLeft = new JButton("50");
-		btnLeft.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameMessage gameMessage = new GameMessage();
-				gameMessage.setMessageType(MessageType.SPEED);
-				gameMessage.setContent("50");
-				gameMessage.setId(txtId.getText());
-				adminGUI.send(gameMessage);
+					GameMessage gameMessage = new GameMessage();
+					gameMessage.setMessageType(MessageType.SPEED);
+					gameMessage.setContent(source.getValue() + "");
+					gameMessage.setId(txtId.getText());
+					adminGUI.send(gameMessage);
+				}
 			}
 		});
-		btnLeft.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		btnLeft.setBounds(199, 102, 61, 29);
-		panel_2.add(btnLeft);
+		slider.setValue(0);
+		slider.setMinimum(-200);
+		slider.setMaximum(200);
+		slider.setBounds(15, 102, 330, 25);
+		panel_2.add(slider);
 
-		JButton btnRight = new JButton("100");
-		btnRight.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameMessage gameMessage = new GameMessage();
-				gameMessage.setMessageType(MessageType.SPEED);
-				gameMessage.setContent("100");
-				gameMessage.setId(txtId.getText());
-				adminGUI.send(gameMessage);
-			}
-		});
-		btnRight.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		btnRight.setBounds(284, 102, 61, 29);
-		panel_2.add(btnRight);
+		label = new JLabel("0");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setBounds(15, 124, 330, 20);
+		panel_2.add(label);
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setLayout(null);
 		panel_3.setBounds(15, 176, 360, 160);
 		panel_1.add(panel_3);
 
-		JButton button = new JButton("ADD PLAYER");
+		button = new JButton("ADD PLAYER");
+		button.setEnabled(false);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				GameMessage gameMessage = new GameMessage();
@@ -208,6 +201,9 @@ public class GUITemplate {
 				gameMessage.setContent(txtPlayer_1.getText());
 				gameMessage.setId(txtId_1.getText());
 				adminGUI.send(gameMessage);
+
+				getButton_7().setEnabled(true);
+				getButton().setEnabled(false);
 			}
 		});
 		button.setBounds(15, 57, 330, 29);
@@ -229,68 +225,25 @@ public class GUITemplate {
 		txtPlayer_1.setBounds(199, 15, 146, 26);
 		panel_3.add(txtPlayer_1);
 
-		JButton button_1 = new JButton("-50");
-		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameMessage gameMessage = new GameMessage();
-				gameMessage.setMessageType(MessageType.SPEED);
-				gameMessage.setContent("-50");
-				gameMessage.setId(txtId_1.getText());
-				adminGUI.send(gameMessage);
-			}
-		});
-		button_1.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		button_1.setBounds(15, 102, 61, 29);
-		panel_3.add(button_1);
+		label_1 = new JLabel("0");
+		label_1.setHorizontalAlignment(SwingConstants.CENTER);
+		label_1.setBounds(15, 124, 330, 20);
+		panel_3.add(label_1);
 
-		JButton btnStop = new JButton("STOP");
-		btnStop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameMessage gameMessage = new GameMessage();
-				gameMessage.setMessageType(MessageType.SPEED);
-				gameMessage.setContent("0");
-				gameMessage.setId(txtId_1.getText());
-				adminGUI.send(gameMessage);
-			}
-		});
-		btnStop.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		btnStop.setBounds(101, 102, 61, 29);
-		panel_3.add(btnStop);
-
-		JButton button_3 = new JButton("50");
-		button_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameMessage gameMessage = new GameMessage();
-				gameMessage.setMessageType(MessageType.SPEED);
-				gameMessage.setContent("50");
-				gameMessage.setId(txtId_1.getText());
-				adminGUI.send(gameMessage);
-			}
-		});
-		button_3.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		button_3.setBounds(199, 102, 61, 29);
-		panel_3.add(button_3);
-
-		JButton button_4 = new JButton("100");
-		button_4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameMessage gameMessage = new GameMessage();
-				gameMessage.setMessageType(MessageType.SPEED);
-				gameMessage.setContent("100");
-				gameMessage.setId(txtId_1.getText());
-				adminGUI.send(gameMessage);
-			}
-		});
-		button_4.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		button_4.setBounds(284, 102, 61, 29);
-		panel_3.add(button_4);
+		JSlider slider_1 = new JSlider();
+		slider_1.setValue(0);
+		slider_1.setMinimum(-200);
+		slider_1.setMaximum(200);
+		slider_1.setBounds(15, 102, 330, 25);
+		panel_3.add(slider_1);
 
 		JPanel panel_4 = new JPanel();
 		panel_4.setLayout(null);
 		panel_4.setBounds(15, 337, 360, 160);
 		panel_1.add(panel_4);
 
-		JButton button_5 = new JButton("ADD PLAYER");
+		button_5 = new JButton("ADD PLAYER");
+		button_5.setEnabled(false);
 		button_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GameMessage gameMessage = new GameMessage();
@@ -298,6 +251,9 @@ public class GUITemplate {
 				gameMessage.setContent(txtPlayer_2.getText());
 				gameMessage.setId(txtId_2.getText());
 				adminGUI.send(gameMessage);
+
+				getButton_7().setEnabled(true);
+				getButton_5().setEnabled(false);
 			}
 		});
 		button_5.setBounds(15, 57, 330, 29);
@@ -319,68 +275,25 @@ public class GUITemplate {
 		txtPlayer_2.setBounds(199, 15, 146, 26);
 		panel_4.add(txtPlayer_2);
 
-		JButton button_6 = new JButton("-50");
-		button_6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameMessage gameMessage = new GameMessage();
-				gameMessage.setMessageType(MessageType.SPEED);
-				gameMessage.setContent("-50");
-				gameMessage.setId(txtId_2.getText());
-				adminGUI.send(gameMessage);
-			}
-		});
-		button_6.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		button_6.setBounds(15, 102, 61, 29);
-		panel_4.add(button_6);
+		label_2 = new JLabel("0");
+		label_2.setHorizontalAlignment(SwingConstants.CENTER);
+		label_2.setBounds(15, 124, 330, 20);
+		panel_4.add(label_2);
 
-		JButton btnStop_1 = new JButton("STOP");
-		btnStop_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameMessage gameMessage = new GameMessage();
-				gameMessage.setMessageType(MessageType.SPEED);
-				gameMessage.setContent("0");
-				gameMessage.setId(txtId_2.getText());
-				adminGUI.send(gameMessage);
-			}
-		});
-		btnStop_1.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		btnStop_1.setBounds(101, 102, 61, 29);
-		panel_4.add(btnStop_1);
-
-		JButton button_8 = new JButton("50");
-		button_8.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameMessage gameMessage = new GameMessage();
-				gameMessage.setMessageType(MessageType.SPEED);
-				gameMessage.setContent("50");
-				gameMessage.setId(txtId_2.getText());
-				adminGUI.send(gameMessage);
-			}
-		});
-		button_8.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		button_8.setBounds(199, 102, 61, 29);
-		panel_4.add(button_8);
-
-		JButton button_9 = new JButton("100");
-		button_9.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameMessage gameMessage = new GameMessage();
-				gameMessage.setMessageType(MessageType.SPEED);
-				gameMessage.setContent("100");
-				gameMessage.setId(txtId_2.getText());
-				adminGUI.send(gameMessage);
-			}
-		});
-		button_9.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		button_9.setBounds(284, 102, 61, 29);
-		panel_4.add(button_9);
+		JSlider slider_2 = new JSlider();
+		slider_2.setValue(0);
+		slider_2.setMinimum(-200);
+		slider_2.setMaximum(200);
+		slider_2.setBounds(15, 102, 330, 25);
+		panel_4.add(slider_2);
 
 		JPanel panel_5 = new JPanel();
 		panel_5.setLayout(null);
 		panel_5.setBounds(15, 497, 360, 160);
 		panel_1.add(panel_5);
 
-		JButton button_10 = new JButton("ADD PLAYER");
+		button_10 = new JButton("ADD PLAYER");
+		button_10.setEnabled(false);
 		button_10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GameMessage gameMessage = new GameMessage();
@@ -388,6 +301,9 @@ public class GUITemplate {
 				gameMessage.setContent(txtPlayer_3.getText());
 				gameMessage.setId(txtId_3.getText());
 				adminGUI.send(gameMessage);
+
+				getButton_7().setEnabled(true);
+				getButton_10().setEnabled(false);
 			}
 		});
 		button_10.setBounds(15, 57, 330, 29);
@@ -409,89 +325,64 @@ public class GUITemplate {
 		txtPlayer_3.setBounds(199, 15, 146, 26);
 		panel_5.add(txtPlayer_3);
 
-		JButton button_11 = new JButton("-50");
-		button_11.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameMessage gameMessage = new GameMessage();
-				gameMessage.setMessageType(MessageType.SPEED);
-				gameMessage.setContent("-50");
-				gameMessage.setId(txtId_3.getText());
-				adminGUI.send(gameMessage);
-			}
-		});
-		button_11.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		button_11.setBounds(15, 102, 61, 29);
-		panel_5.add(button_11);
+		label_3 = new JLabel("0");
+		label_3.setHorizontalAlignment(SwingConstants.CENTER);
+		label_3.setBounds(15, 124, 330, 20);
+		panel_5.add(label_3);
 
-		JButton btnStop_2 = new JButton("STOP");
-		btnStop_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameMessage gameMessage = new GameMessage();
-				gameMessage.setMessageType(MessageType.SPEED);
-				gameMessage.setContent("0");
-				gameMessage.setId(txtId_3.getText());
-				adminGUI.send(gameMessage);
-			}
-		});
-		btnStop_2.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		btnStop_2.setBounds(101, 102, 61, 29);
-		panel_5.add(btnStop_2);
-
-		JButton button_13 = new JButton("50");
-		button_13.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameMessage gameMessage = new GameMessage();
-				gameMessage.setMessageType(MessageType.SPEED);
-				gameMessage.setContent("50");
-				gameMessage.setId(txtId_3.getText());
-				adminGUI.send(gameMessage);
-			}
-		});
-		button_13.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		button_13.setBounds(199, 102, 61, 29);
-		panel_5.add(button_13);
-
-		JButton button_14 = new JButton("100");
-		button_14.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameMessage gameMessage = new GameMessage();
-				gameMessage.setMessageType(MessageType.SPEED);
-				gameMessage.setContent("100");
-				gameMessage.setId(txtId_3.getText());
-				adminGUI.send(gameMessage);
-			}
-		});
-		button_14.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		button_14.setBounds(284, 102, 61, 29);
-		panel_5.add(button_14);
+		JSlider slider_3 = new JSlider();
+		slider_3.setValue(0);
+		slider_3.setMinimum(-200);
+		slider_3.setMaximum(200);
+		slider_3.setBounds(15, 102, 330, 25);
+		panel_5.add(slider_3);
 
 		textArea = new JTextArea();
-		textArea.setBounds(420, 200, 850, 489);
+		// textArea.setBounds(420, 200, 850, 489);
 		panel.add(textArea);
 
-		JButton btnNewGame = new JButton("NEW GAME");
+		JScrollPane scroll = new JScrollPane(textArea);
+		scroll.setBounds(420, 200, 850, 489);
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+		DefaultCaret caret = (DefaultCaret) textArea.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
+		// Add Textarea in to middle panel
+		panel.add(scroll);
+
+		btnNewGame = new JButton("NEW GAME");
+		btnNewGame.setEnabled(false);
 		btnNewGame.setBounds(1136, 146, 134, 38);
 		panel.add(btnNewGame);
 
-		JButton button_2 = new JButton("END GAME");
+		button_2 = new JButton("END GAME");
+		button_2.setEnabled(false);
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GameMessage gameMessage = new GameMessage();
 				gameMessage.setMessageType(MessageType.END_GAME);
 				gameMessage.setId("admin");
 				adminGUI.send(gameMessage);
+
+				getButton_2().setEnabled(false);
+				getButton_7().setEnabled(true);
 			}
 		});
 		button_2.setBounds(875, 146, 134, 38);
 		panel.add(button_2);
 
-		JButton button_7 = new JButton("START GAME");
+		button_7 = new JButton("START GAME");
+		button_7.setEnabled(false);
 		button_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				GameMessage gameMessage = new GameMessage();
 				gameMessage.setMessageType(MessageType.START_GAME);
 				gameMessage.setId("admin");
 				adminGUI.send(gameMessage);
+
+				getButton_2().setEnabled(true);
+				getButton_7().setEnabled(false);
 			}
 		});
 		button_7.setBounds(700, 146, 134, 38);
@@ -504,6 +395,9 @@ public class GUITemplate {
 					adminGUI.run();
 					getTextArea().append("ready\n");
 					txtNotConnected.setText("CONNECTED");
+
+					btnConnect.setEnabled(false);
+					getBtnNewGame().setEnabled(true);
 				} catch (Exception e1) {
 					getTextArea().append(e1.getMessage() + "\n");
 				}
@@ -518,6 +412,59 @@ public class GUITemplate {
 				gameMessage.setContent("blabla");
 				gameMessage.setId("admin");
 				adminGUI.send(gameMessage);
+
+				getBtnAddPlayer().setEnabled(true);
+				getButton().setEnabled(true);
+				getButton_10().setEnabled(true);
+				getButton_5().setEnabled(true);
+			}
+		});
+
+		slider_1.addChangeListener(new ChangeListener() {
+
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider) e.getSource();
+				if (source.getValueIsAdjusting()) {
+					getLabel_1().setText(source.getValue() + "");
+
+					GameMessage gameMessage = new GameMessage();
+					gameMessage.setMessageType(MessageType.SPEED);
+					gameMessage.setContent(source.getValue() + "");
+					gameMessage.setId(txtId.getText());
+					adminGUI.send(gameMessage);
+				}
+			}
+		});
+
+		slider_2.addChangeListener(new ChangeListener() {
+
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider) e.getSource();
+				if (source.getValueIsAdjusting()) {
+					getLabel_2().setText(source.getValue() + "");
+
+					GameMessage gameMessage = new GameMessage();
+					gameMessage.setMessageType(MessageType.SPEED);
+					gameMessage.setContent(source.getValue() + "");
+					gameMessage.setId(txtId.getText());
+					adminGUI.send(gameMessage);
+				}
+			}
+		});
+
+		slider_3.addChangeListener(new ChangeListener() {
+
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider) e.getSource();
+				if (source.getValueIsAdjusting()) {
+					getLabel_3().setText(source.getValue() + "");
+
+					GameMessage gameMessage = new GameMessage();
+					gameMessage.setMessageType(MessageType.SPEED);
+					gameMessage.setContent(source.getValue() + "");
+					gameMessage.setId(txtId.getText());
+					adminGUI.send(gameMessage);
+				}
 			}
 		});
 
@@ -627,4 +574,47 @@ public class GUITemplate {
 		this.textArea = textArea;
 	}
 
+	public JLabel getLabel() {
+		return label;
+	}
+
+	public JLabel getLabel_1() {
+		return label_1;
+	}
+
+	public JLabel getLabel_2() {
+		return label_2;
+	}
+
+	public JLabel getLabel_3() {
+		return label_3;
+	}
+
+	public JButton getBtnNewGame() {
+		return btnNewGame;
+	}
+
+	public JButton getBtnAddPlayer() {
+		return btnAddPlayer;
+	}
+
+	public JButton getButton() {
+		return button;
+	}
+
+	public JButton getButton_10() {
+		return button_10;
+	}
+
+	public JButton getButton_5() {
+		return button_5;
+	}
+
+	public JButton getButton_2() {
+		return button_2;
+	}
+
+	public JButton getButton_7() {
+		return button_7;
+	}
 }
