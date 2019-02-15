@@ -3,8 +3,11 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -51,8 +54,14 @@ public class GUITemplate {
 	private JButton button_7;
 	private JButton button_2;
 
+	private JSlider slider;
+	private JSlider slider_1;
+	private JSlider slider_2;
+	private JSlider slider_3;
+
 	public static GUITemplate window;
 	public static AdminGUI adminGUI;
+	private JButton btnResetMotors;
 
 	/**
 	 * Launch the application.
@@ -128,7 +137,6 @@ public class GUITemplate {
 		panel_2.setLayout(null);
 
 		btnAddPlayer = new JButton("ADD PLAYER");
-		btnAddPlayer.setEnabled(false);
 		btnAddPlayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				GameMessage gameMessage = new GameMessage();
@@ -160,7 +168,7 @@ public class GUITemplate {
 		panel_2.add(txtPlayer);
 		txtPlayer.setColumns(10);
 
-		JSlider slider = new JSlider();
+		slider = new JSlider();
 		slider.addChangeListener(new ChangeListener() {
 
 			public void stateChanged(ChangeEvent e) {
@@ -193,7 +201,6 @@ public class GUITemplate {
 		panel_1.add(panel_3);
 
 		button = new JButton("ADD PLAYER");
-		button.setEnabled(false);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				GameMessage gameMessage = new GameMessage();
@@ -230,7 +237,7 @@ public class GUITemplate {
 		label_1.setBounds(15, 124, 330, 20);
 		panel_3.add(label_1);
 
-		JSlider slider_1 = new JSlider();
+		slider_1 = new JSlider();
 		slider_1.setValue(0);
 		slider_1.setMinimum(-200);
 		slider_1.setMaximum(200);
@@ -243,7 +250,6 @@ public class GUITemplate {
 		panel_1.add(panel_4);
 
 		button_5 = new JButton("ADD PLAYER");
-		button_5.setEnabled(false);
 		button_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GameMessage gameMessage = new GameMessage();
@@ -280,7 +286,7 @@ public class GUITemplate {
 		label_2.setBounds(15, 124, 330, 20);
 		panel_4.add(label_2);
 
-		JSlider slider_2 = new JSlider();
+		slider_2 = new JSlider();
 		slider_2.setValue(0);
 		slider_2.setMinimum(-200);
 		slider_2.setMaximum(200);
@@ -293,7 +299,6 @@ public class GUITemplate {
 		panel_1.add(panel_5);
 
 		button_10 = new JButton("ADD PLAYER");
-		button_10.setEnabled(false);
 		button_10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GameMessage gameMessage = new GameMessage();
@@ -328,9 +333,10 @@ public class GUITemplate {
 		label_3 = new JLabel("0");
 		label_3.setHorizontalAlignment(SwingConstants.CENTER);
 		label_3.setBounds(15, 124, 330, 20);
+
 		panel_5.add(label_3);
 
-		JSlider slider_3 = new JSlider();
+		slider_3 = new JSlider();
 		slider_3.setValue(0);
 		slider_3.setMinimum(-200);
 		slider_3.setMaximum(200);
@@ -338,6 +344,7 @@ public class GUITemplate {
 		panel_5.add(slider_3);
 
 		textArea = new JTextArea();
+		textArea.setLocation(11, 7);
 		// textArea.setBounds(420, 200, 850, 489);
 		panel.add(textArea);
 
@@ -387,6 +394,30 @@ public class GUITemplate {
 		});
 		button_7.setBounds(700, 146, 134, 38);
 		panel.add(button_7);
+
+		btnResetMotors = new JButton("RESET MOTORS");
+		btnResetMotors.setBounds(476, 146, 158, 34);
+
+		btnResetMotors.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				try {
+					slider.setValue(0);
+					slider_1.setValue(1);
+					slider_2.setValue(2);
+					slider_3.setValue(3);
+
+					label.setText("0");
+					label_1.setText("0");
+					label_2.setText("0");
+					label_3.setText("0");
+				} catch (Exception e1) {
+					getTextArea().append(e1.getMessage() + "\n");
+				}
+			}
+		});
+
+		panel.add(btnResetMotors);
 
 		btnConnect.addActionListener(new ActionListener() {
 
@@ -452,6 +483,20 @@ public class GUITemplate {
 			}
 		});
 
+		slider_3.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Point p = e.getPoint();
+				double percent = p.x / ((double) slider_3.getWidth());
+				int range = slider_3.getMaximum() - slider_3.getMinimum();
+				double newVal = range * percent;
+				int result = (int) (slider_3.getMinimum() + newVal);
+				slider_3.setValue(result);
+			}
+
+		});
+
 		slider_3.addChangeListener(new ChangeListener() {
 
 			public void stateChanged(ChangeEvent e) {
@@ -466,6 +511,64 @@ public class GUITemplate {
 					adminGUI.send(gameMessage);
 				}
 			}
+		});
+
+		slider_3.addChangeListener(new ChangeListener() {
+
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider) e.getSource();
+				if (source.getValueIsAdjusting()) {
+					getLabel_3().setText(source.getValue() + "");
+
+					GameMessage gameMessage = new GameMessage();
+					gameMessage.setMessageType(MessageType.SPEED);
+					gameMessage.setContent(source.getValue() + "");
+					gameMessage.setId(txtId_3.getText());
+					adminGUI.send(gameMessage);
+				}
+			}
+		});
+
+		slider_2.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Point p = e.getPoint();
+				double percent = p.x / ((double) slider_2.getWidth());
+				int range = slider_2.getMaximum() - slider_2.getMinimum();
+				double newVal = range * percent;
+				int result = (int) (slider_2.getMinimum() + newVal);
+				slider_2.setValue(result);
+			}
+
+		});
+
+		slider_1.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Point p = e.getPoint();
+				double percent = p.x / ((double) slider_1.getWidth());
+				int range = slider_1.getMaximum() - slider_1.getMinimum();
+				double newVal = range * percent;
+				int result = (int) (slider_1.getMinimum() + newVal);
+				slider_1.setValue(result);
+			}
+
+		});
+
+		slider.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Point p = e.getPoint();
+				double percent = p.x / ((double) slider.getWidth());
+				int range = slider.getMaximum() - slider.getMinimum();
+				double newVal = range * percent;
+				int result = (int) (slider.getMinimum() + newVal);
+				slider.setValue(result);
+			}
+
 		});
 
 	}
