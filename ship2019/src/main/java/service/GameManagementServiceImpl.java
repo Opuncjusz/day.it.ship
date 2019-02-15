@@ -4,11 +4,16 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import model.Game;
 import model.GameStatus;
 import model.Player;
 
 public class GameManagementServiceImpl implements GameManagementService {
+
+	private static Logger LOGGER = LoggerFactory.getLogger(GameManagementServiceImpl.class);
 
 	private Game game;
 
@@ -68,6 +73,14 @@ public class GameManagementServiceImpl implements GameManagementService {
 		if (players.size() == 0) {
 			throw new IllegalArgumentException("players.size = 0");
 		}
+
+		LOGGER.info("#####################");
+
+		for (Player each : players.values()) {
+			LOGGER.info("Player {} ({}) has motors: {}", each.getName(), each.getId(), each.getMotorIds());
+		}
+
+		LOGGER.info("#####################");
 	}
 
 }
