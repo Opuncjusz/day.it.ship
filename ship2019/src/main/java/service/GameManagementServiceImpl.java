@@ -2,15 +2,19 @@ package service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.java_websocket.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import gui.admin.AdminGUITemplate;
 import main.Main;
 import model.Game;
 import model.GameStatus;
@@ -22,10 +26,10 @@ public class GameManagementServiceImpl implements GameManagementService {
 
 	private Game game;
 
-	private LocalDateTime startDate;
-	private LocalDateTime endDate;
+	private List<Game> allGames;
 
 	public GameManagementServiceImpl() {
+		allGames = new ArrayList<Game>();
 		createNewGame();
 	}
 
@@ -43,17 +47,32 @@ public class GameManagementServiceImpl implements GameManagementService {
 
 	public void startGame() {
 		setPlayersToMotors();
-		startDate = LocalDateTime.now();
-		endDate = null;
+		game.setStartDate(LocalDateTime.now());
+		game.setEndDate(null);
 
 		game.setGameStatus(GameStatus.STARTED);
 	}
 
 	public void endGame() {
 		game.setGameStatus(GameStatus.ENDED);
-		endDate = LocalDateTime.now();
+		game.setEndDate(LocalDateTime.now());
+
+		if (game.getStartDate() == null) {
+			LOGGER.error("startDate is null!");
+		}
+
+		if (game.getEndDate() == null) {
+			LOGGER.error("endDate is null!");
+		}
+
+		game.setGameTime(Duration.between(game.getStartDate(), game.getEndDate()).toMillis());
+
+		allGames.add(game);
 
 		disconnectWithCurrentClients();
+
+		List<Game> topGames = getTopGames();
+		AdminGUITemplate.TOP_GAMES = topGames;
 	}
 
 	private void disconnectWithCurrentClients() {
@@ -92,7 +111,8 @@ public class GameManagementServiceImpl implements GameManagementService {
 		}
 
 		if (players.size() == 0) {
-			throw new IllegalArgumentException("players.size = 0");
+			LOGGER.error("players.size = 0");
+			return;
 		}
 
 		LOGGER.info("#####################");
@@ -150,17 +170,38 @@ public class GameManagementServiceImpl implements GameManagementService {
 	}
 
 	public long getCurrentGameTime() {
-		if (startDate == null) {
+		if (game.getStartDate() == null) {
 			return 0;
 		}
 
-		LocalDateTime currentTime = endDate;
+		LocalDateTime currentTime = game.getEndDate();
 
-		if (endDate == null) {
+		if (currentTime == null) {
 			currentTime = LocalDateTime.now();
 		}
 
-		return Duration.between(startDate, currentTime).toMillis();
+		return Duration.between(game.getStartDate(), currentTime).toMillis();
+	}
+
+	public List<Game> getTopGames() {
+		allGames.sort(new Comparator<Game>() {
+
+			public int compare(Game o1, Game o2) {
+				return new Long(o1.getGameTime()).compareTo(o2.getGameTime());
+			}
+		});
+
+		List<Game> top = new ArrayList<Game>();
+
+		for (Game each : allGames) {
+			if (top.size() >= 10) {
+				break;
+			}
+
+			top.add(each);
+		}
+
+		return allGames;
 	}
 
 }

@@ -21,8 +21,19 @@ public class AdminConnector {
 
 	private WebSocketClient websocket;
 
+	private String ip;
+
 	public void run(String uri) throws URISyntaxException {
-		websocket = new WebSocketClient(new URI(uri)) {
+		ip = uri;
+
+		createNew();
+
+		// websocket.connect();
+		// LOGGER.info("websocket.isOpen()? {}", websocket.isOpen());
+	}
+
+	private void createNew() throws URISyntaxException {
+		websocket = new WebSocketClient(new URI(ip)) {
 
 			@Override
 			public void onMessage(String message) {
@@ -37,7 +48,12 @@ public class AdminConnector {
 
 			@Override
 			public void onClose(int code, String reason, boolean remote) {
-				LOGGER.warn("You have been disconnected from: " + getURI() + "; Code: " + code + " " + reason + "\n");
+				try {
+					createNew();
+				} catch (URISyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 			@Override
@@ -48,6 +64,7 @@ public class AdminConnector {
 
 		websocket.connect();
 		LOGGER.info("websocket.isOpen()? {}", websocket.isOpen());
+
 	}
 
 	public void send(GameMessage message) {
