@@ -46,16 +46,11 @@ void setup() {
 
 
 void loop() {
-  if(Serial) {
-    if(Serial.available()) {
-      handleMotor(motorA);
-      handleMotor(motorB);
-      handleMotor(motorC);
-      handleMotor(motorD);
-    }
-  } else {
-    delay(1000);
-    initializeSerial();
+  if(Serial.available()) {
+    handleMotor(motorA);
+    handleMotor(motorB);
+    handleMotor(motorC);
+    handleMotor(motorD);
   }
 }
 
