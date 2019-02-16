@@ -3,8 +3,7 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import gui.AdminGUI;
-import gui.GUITemplate;
+import gui.main.ChooseGUI;
 import websocket.GameEndpoint;
 
 public class Main {
@@ -15,15 +14,17 @@ public class Main {
 		LOGGER.info("works");
 
 		try {
-			AdminGUI adminGUI = new AdminGUI();
-			GUITemplate.adminGUI = adminGUI;
-			System.out.println("GUITemplate.adminGUI = " + GUITemplate.adminGUI);
+			runGUI();
 			runGameEndpoint();
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}
 
 		LOGGER.error("ending...");
+	}
+
+	private static void runGUI() {
+		new ChooseGUI();
 	}
 
 	private static void runGameEndpoint() throws IOException, InterruptedException {

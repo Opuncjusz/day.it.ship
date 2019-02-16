@@ -1,4 +1,4 @@
-package gui;
+package gui.devadmin;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -31,7 +31,7 @@ public class AdminGUI {
 
 			@Override
 			public void onOpen(ServerHandshake handshake) {
-				GUITemplate.window.getTextArea().append("You are connected to ChatServer: " + getURI() + "\n");
+				GUITemplate.window.getTextArea().append("You are connected to Server: " + getURI() + "\n");
 			}
 
 			@Override
