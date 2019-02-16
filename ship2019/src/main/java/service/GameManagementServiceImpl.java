@@ -1,12 +1,15 @@
 package service;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.java_websocket.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import main.Main;
 import model.Game;
 import model.GameStatus;
 import model.Player;
@@ -41,6 +44,15 @@ public class GameManagementServiceImpl implements GameManagementService {
 
 	public void endGame() {
 		game.setGameStatus(GameStatus.ENDED);
+		disconnectWithCurrentClients();
+	}
+
+	private void disconnectWithCurrentClients() {
+		Collection<WebSocket> connections = Main.GAME_ENDPOINT.getConnections();
+		for (WebSocket each : connections) {
+			LOGGER.warn("Rozlaczam {}", each.getRemoteSocketAddress());
+			each.close();
+		}
 	}
 
 	private void setPlayersToMotors() {

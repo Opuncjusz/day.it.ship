@@ -1,3 +1,4 @@
+package main;
 import java.io.IOException;
 
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import websocket.GameEndpoint;
 
 public class Main {
 
+	public static GameEndpoint GAME_ENDPOINT;
 	private static Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
 	public static void main(String args[]) {
@@ -30,10 +32,10 @@ public class Main {
 	private static void runGameEndpoint() throws IOException, InterruptedException {
 		int port = 8887;
 
-		GameEndpoint s = new GameEndpoint(port);
-		s.start();
+		Main.GAME_ENDPOINT = new GameEndpoint(port);
+		GAME_ENDPOINT.start();
 
-		LOGGER.info("GameServer started on port: " + s.getPort());
+		LOGGER.info("GameServer started on port: " + GAME_ENDPOINT.getPort());
 
 		while (true) {
 			Thread.sleep(600000);
