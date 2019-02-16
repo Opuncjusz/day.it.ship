@@ -1,6 +1,11 @@
 package CarAdapter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class CarAdapter {
+
+	private static Logger LOGGER = LoggerFactory.getLogger(CarAdapter.class);
 
 	private static final int SPEED_LIMIT_POSITIVE = 200;
 	private static final int SPEED_LIMIT_NEGATIVE = -200;
@@ -9,10 +14,13 @@ public class CarAdapter {
 
 	public void sendInfoToCar() {
 		String outputText = createMessage();
-		COMPort.write(outputText);
+		LOGGER.info(outputText);
+
+		COMPort.write(outputText.substring(0, 7));
+		COMPort.write(outputText.substring(7));
 	}
 
-	public String createMessage() {
+	protected String createMessage() {
 		StringBuilder outputText = new StringBuilder();
 		outputText.append(speedToInfoText(carInformation.getSpeedOfMotorA()));
 		outputText.append(speedToInfoText(carInformation.getSpeedOfMotorB()));
@@ -21,7 +29,7 @@ public class CarAdapter {
 		return outputText.toString();
 	}
 
-	public String speedToInfoText(int number) {
+	protected String speedToInfoText(int number) {
 		int limitedSpeed = limitCarSpeed(number);
 		String numberWithLeadingZeros = "00" + String.valueOf(limitedSpeed >= 0 ? limitedSpeed : limitedSpeed*-1);
 		return (limitedSpeed >= 0 ? "+" : "-") + numberWithLeadingZeros.substring(numberWithLeadingZeros.length() - 3);

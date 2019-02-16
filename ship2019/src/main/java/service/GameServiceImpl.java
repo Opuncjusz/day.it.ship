@@ -10,7 +10,7 @@ import websocket.to.GameMessage;
 
 public class GameServiceImpl implements GameService {
 
-	private static final int TIMER_MS = 50;
+	private static final int TIMER_MS = 400;
 
 	private static Logger LOGGER = LoggerFactory.getLogger(GameServiceImpl.class);
 
