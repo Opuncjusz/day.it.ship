@@ -14,4 +14,7 @@ interface GameManagementService {
 	void startGame();
 
 	void endGame();
+
+	long getCurrentGameTime();
+
 }

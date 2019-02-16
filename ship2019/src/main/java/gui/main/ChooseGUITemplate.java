@@ -85,9 +85,9 @@ public class ChooseGUITemplate extends JFrame {
 		contentPane.add(btnDevTestGui);
 
 		JButton btnAdminPanel = new JButton("ADMIN PANEL");
-		btnAdminPanel.setEnabled(false);
 		btnAdminPanel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				new gui.admin.AdminGUI();
 			}
 		});
 		btnAdminPanel.setForeground(new Color(0, 128, 0));

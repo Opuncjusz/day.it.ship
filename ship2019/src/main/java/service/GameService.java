@@ -8,4 +8,6 @@ interface GameService {
 
 	void startConnectionWithCar();
 
+	void sendAdminInfo();
+
 }

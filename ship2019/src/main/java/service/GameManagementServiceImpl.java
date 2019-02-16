@@ -1,5 +1,7 @@
 package service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -20,6 +22,9 @@ public class GameManagementServiceImpl implements GameManagementService {
 
 	private Game game;
 
+	private LocalDateTime startDate;
+	private LocalDateTime endDate;
+
 	public GameManagementServiceImpl() {
 		createNewGame();
 	}
@@ -38,12 +43,16 @@ public class GameManagementServiceImpl implements GameManagementService {
 
 	public void startGame() {
 		setPlayersToMotors();
+		startDate = LocalDateTime.now();
+		endDate = null;
 
 		game.setGameStatus(GameStatus.STARTED);
 	}
 
 	public void endGame() {
 		game.setGameStatus(GameStatus.ENDED);
+		endDate = LocalDateTime.now();
+
 		disconnectWithCurrentClients();
 	}
 
@@ -98,15 +107,6 @@ public class GameManagementServiceImpl implements GameManagementService {
 				testMode();
 			}
 
-			setUptestMode(next);
-			setUptestMode(iterator.next());
-			setUptestMode(iterator.next());
-			setUptestMode(iterator.next());
-
-			LOGGER.info("TEST MODE");
-
-			LOGGER.info("#####################");
-
 		}
 
 		for (Player each : players.values()) {
@@ -120,6 +120,18 @@ public class GameManagementServiceImpl implements GameManagementService {
 		Map<String, Player> players = game.getPlayers();
 
 		Iterator<Player> iterator = players.values().iterator();
+
+		setUptestMode(iterator.next());
+		setUptestMode(iterator.next());
+		setUptestMode(iterator.next());
+		setUptestMode(iterator.next());
+
+		LOGGER.info("#####################");
+
+		LOGGER.info("TEST MODE");
+
+		LOGGER.info("#####################");
+
 	}
 
 	private void setUptestMode(Player player) {
@@ -135,6 +147,20 @@ public class GameManagementServiceImpl implements GameManagementService {
 		if (player.getId().equals("ID_4")) {
 			player.setMotorIds(Arrays.asList("D"));
 		}
+	}
+
+	public long getCurrentGameTime() {
+		if (startDate == null) {
+			return 0;
+		}
+
+		LocalDateTime currentTime = endDate;
+
+		if (endDate == null) {
+			currentTime = LocalDateTime.now();
+		}
+
+		return Duration.between(startDate, currentTime).toMillis();
 	}
 
 }

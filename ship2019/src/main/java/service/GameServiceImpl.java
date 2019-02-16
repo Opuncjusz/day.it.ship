@@ -1,9 +1,18 @@
 package service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+import java.util.TimeZone;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import CarAdapter.CarAdapter;
+import gui.admin.AdminGUITemplate;
+import gui.admin.AdminGameInfo;
 import model.GameStatus;
 import model.Player;
 import websocket.to.GameMessage;
@@ -85,6 +94,117 @@ public class GameServiceImpl implements GameService {
 		});
 
 		thread.start();
+	}
+
+	public void sendAdminInfo() {
+		AdminGameInfo info = new AdminGameInfo();
+
+		// default
+		info.setMotorOwnerA("");
+		info.setMotorOwnerB("");
+		info.setMotorOwnerC("");
+		info.setMotorOwnerD("");
+
+		// info
+		info.setMotorPowerA(getMotorPowerAsText(carAdapter.getCarInformation().getSpeedOfMotorA()));
+		info.setMotorPowerB(getMotorPowerAsText(carAdapter.getCarInformation().getSpeedOfMotorB()));
+		info.setMotorPowerC(getMotorPowerAsText(carAdapter.getCarInformation().getSpeedOfMotorC()));
+		info.setMotorPowerD(getMotorPowerAsText(carAdapter.getCarInformation().getSpeedOfMotorD()));
+
+		Map<String, Player> players = gameManagementService.getCurrentGame().getPlayers();
+
+		for (String key : players.keySet()) {
+			Player player = players.get(key);
+
+			for (String motor : player.getMotorIds()) {
+				if (motor.equals("A")) {
+					info.setMotorOwnerA(player.getName());
+				}
+
+				if (motor.equals("B")) {
+					info.setMotorOwnerB(player.getName());
+				}
+
+				if (motor.equals("C")) {
+					info.setMotorOwnerC(player.getName());
+				}
+
+				if (motor.equals("D")) {
+					info.setMotorOwnerD(player.getName());
+				}
+			}
+
+			if (StringUtils.isEmpty(info.getPlayer1())) {
+				info.setPlayer1(player.getName());
+				continue;
+			}
+
+			if (StringUtils.isEmpty(info.getPlayer2())) {
+				info.setPlayer2(player.getName());
+				continue;
+			}
+
+			if (StringUtils.isEmpty(info.getPlayer3())) {
+				info.setPlayer3(player.getName());
+				continue;
+			}
+
+			if (StringUtils.isEmpty(info.getPlayer4())) {
+				info.setPlayer4(player.getName());
+				continue;
+			}
+		}
+
+		if (StringUtils.isEmpty(info.getPlayer1())) {
+			info.setPlayer1("NOT CONNECTED");
+		}
+
+		if (StringUtils.isEmpty(info.getPlayer2())) {
+			info.setPlayer2("NOT CONNECTED");
+		}
+
+		if (StringUtils.isEmpty(info.getPlayer3())) {
+			info.setPlayer3("NOT CONNECTED");
+		}
+
+		if (StringUtils.isEmpty(info.getPlayer4())) {
+			info.setPlayer4("NOT CONNECTED");
+		}
+
+		info.setTime(getCurrentGameTime(gameManagementService.getCurrentGameTime()));
+
+		AdminGUITemplate.ADMIN_GAME_INFO = info;
+	}
+
+	public String getCurrentGameTime(long time) {
+		Date date = new Date(time);
+		DateFormat formatter = new SimpleDateFormat("mm:ss");
+		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+		return formatter.format(date);
+	}
+
+	public String getMotorPowerAsText(long power) {
+		if (power > -1) {
+			int value = (int) (((double) power / (double) CarAdapter.SPEED_LIMIT_POSITIVE) * 100);
+
+			if (value == 0 && power > 0) {
+				return "1%";
+			}
+
+			return value + "%";
+		}
+
+		if (power < 0) {
+			int value = (int) (((double) power / (double) CarAdapter.SPEED_LIMIT_NEGATIVE) * -100);
+
+			if (value == 0 && power < 0) {
+				return "-1%";
+			}
+
+			return value + "%";
+		}
+
+		return "0%";
 	}
 
 }

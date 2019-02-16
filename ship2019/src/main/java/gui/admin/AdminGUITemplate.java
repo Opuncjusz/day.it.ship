@@ -20,8 +20,17 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import client.Connector;
+import websocket.to.GameMessage;
+import websocket.type.MessageType;
 
 public class AdminGUITemplate extends JFrame {
+
+	private static Connector connector;
+	public static AdminGameInfo ADMIN_GAME_INFO;
 
 	private JPanel contentPane;
 	private JTextField txtAleksanderWtf;
@@ -43,6 +52,7 @@ public class AdminGUITemplate extends JFrame {
 	private JButton btnStartNewGame;
 	private JButton button;
 	private JButton btnNewGame;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -53,6 +63,29 @@ public class AdminGUITemplate extends JFrame {
 				try {
 					AdminGUITemplate frame = new AdminGUITemplate();
 					frame.setVisible(true);
+					connector = new Connector();
+					connector.run("ws://localhost:8887");
+
+					// default game info
+					ADMIN_GAME_INFO = new AdminGameInfo();
+
+					ADMIN_GAME_INFO.setMotorOwnerA("");
+					ADMIN_GAME_INFO.setMotorOwnerB("");
+					ADMIN_GAME_INFO.setMotorOwnerC("");
+					ADMIN_GAME_INFO.setMotorOwnerD("");
+
+					ADMIN_GAME_INFO.setPlayer1("NOT CONNECTED");
+					ADMIN_GAME_INFO.setPlayer2("NOT CONNECTED");
+					ADMIN_GAME_INFO.setPlayer3("NOT CONNECTED");
+					ADMIN_GAME_INFO.setPlayer4("NOT CONNECTED");
+
+					ADMIN_GAME_INFO.setMotorPowerA("0%");
+					ADMIN_GAME_INFO.setMotorPowerB("0%");
+					ADMIN_GAME_INFO.setMotorPowerC("0%");
+					ADMIN_GAME_INFO.setMotorPowerD("0%");
+
+					frame.timer();
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -60,10 +93,59 @@ public class AdminGUITemplate extends JFrame {
 		});
 	}
 
+	private void timer() {
+
+		Thread thread = new Thread(new Runnable() {
+
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
+					getInfo();
+					setInfo();
+				}
+			}
+		});
+
+		thread.start();
+
+	}
+
+	private void getInfo() {
+		GameMessage gameMessage = new GameMessage();
+		gameMessage.setId("admin");
+		gameMessage.setMessageType(MessageType.GET_INFO);
+		connector.send(gameMessage);
+	}
+
+	private void setInfo() {
+		txtAleksanderWtf.setText(ADMIN_GAME_INFO.getPlayer1());
+		txtNotConnected.setText(ADMIN_GAME_INFO.getPlayer2());
+		txtNotConnected_1.setText(ADMIN_GAME_INFO.getPlayer3());
+		txtNotConnected_2.setText(ADMIN_GAME_INFO.getPlayer4());
+
+		textField_3.setText(ADMIN_GAME_INFO.getMotorOwnerA());
+		textField_6.setText(ADMIN_GAME_INFO.getMotorOwnerB());
+		textField_4.setText(ADMIN_GAME_INFO.getMotorOwnerC());
+		textField_5.setText(ADMIN_GAME_INFO.getMotorOwnerD());
+
+		label.setText(ADMIN_GAME_INFO.getMotorPowerA());
+		label_3.setText(ADMIN_GAME_INFO.getMotorPowerB());
+		label_1.setText(ADMIN_GAME_INFO.getMotorPowerC());
+		label_2.setText(ADMIN_GAME_INFO.getMotorPowerD());
+
+		textField.setText(ADMIN_GAME_INFO.getTime());
+	}
+
 	/**
 	 * Create the frame.
 	 */
 	public AdminGUITemplate() {
+		setTitle("GAME PANEL");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1378, 733);
@@ -144,6 +226,7 @@ public class AdminGUITemplate extends JFrame {
 		panel_2.add(panel_3);
 
 		textField_3 = new JTextField();
+		textField_3.setHorizontalAlignment(SwingConstants.CENTER);
 		textField_3.setEditable(false);
 		textField_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textField_3.setBounds(15, 79, 146, 26);
@@ -151,6 +234,7 @@ public class AdminGUITemplate extends JFrame {
 		textField_3.setColumns(10);
 
 		textField_4 = new JTextField();
+		textField_4.setHorizontalAlignment(SwingConstants.CENTER);
 		textField_4.setEditable(false);
 		textField_4.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textField_4.setBounds(15, 259, 146, 26);
@@ -158,6 +242,7 @@ public class AdminGUITemplate extends JFrame {
 		textField_4.setColumns(10);
 
 		textField_5 = new JTextField();
+		textField_5.setHorizontalAlignment(SwingConstants.CENTER);
 		textField_5.setEditable(false);
 		textField_5.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textField_5.setColumns(10);
@@ -165,6 +250,7 @@ public class AdminGUITemplate extends JFrame {
 		panel_2.add(textField_5);
 
 		textField_6 = new JTextField();
+		textField_6.setHorizontalAlignment(SwingConstants.CENTER);
 		textField_6.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textField_6.setEditable(false);
 		textField_6.setColumns(10);
@@ -222,19 +308,14 @@ public class AdminGUITemplate extends JFrame {
 
 		});
 
-		slider.addMouseListener(new MouseAdapter() {
+		slider.addChangeListener(new ChangeListener() {
 
-			@Override
-			public void mousePressed(MouseEvent e) {
-				Point p = e.getPoint();
-				double percent = p.x / ((double) slider.getWidth());
-				int range = slider.getMaximum() - slider.getMinimum();
-				double newVal = range * percent;
-				int result = (int) (slider.getMinimum() + newVal);
-				slider.setValue(result);
-				lblGameSpeed.setText("Game speed " + result + "%");
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider) e.getSource();
+				if (source.getValueIsAdjusting()) {
+					lblGameSpeed.setText("Game speed " + source.getValue() + "%");
+				}
 			}
-
 		});
 
 		lblGameSpeed = new JLabel("Game speed 100%");
@@ -258,6 +339,15 @@ public class AdminGUITemplate extends JFrame {
 		btnNewGame = new JButton("NEW GAME");
 		btnNewGame.setBounds(1075, 28, 252, 29);
 		panel_1.add(btnNewGame);
+
+		textField = new JTextField();
+		textField.setFont(new Font("Tahoma", Font.BOLD, 16));
+		textField.setHorizontalAlignment(SwingConstants.CENTER);
+		textField.setText("00:00:00");
+		textField.setEditable(false);
+		textField.setBounds(1075, 165, 252, 26);
+		panel_1.add(textField);
+		textField.setColumns(10);
 	}
 
 }

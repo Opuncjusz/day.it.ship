@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 
 import websocket.to.GameMessage;
+import websocket.type.MessageType;
 
 public class GameMessageConverter {
 
@@ -14,7 +15,9 @@ public class GameMessageConverter {
 	public static GameMessage getGameMessage(String content) {
 		GameMessage fromJson = new Gson().fromJson(content, GameMessage.class);
 
-		LOGGER.debug(fromJson.toString());
+		if (fromJson.getMessageType() != MessageType.GET_INFO) {
+			LOGGER.debug(fromJson.toString());
+		}
 
 		return fromJson;
 	}

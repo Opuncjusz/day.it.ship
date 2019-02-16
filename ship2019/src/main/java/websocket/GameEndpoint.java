@@ -20,9 +20,9 @@ public class GameEndpoint extends Endpoint {
 
 	@Override
 	public void onMessage(WebSocket websocket, String content) {
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("FROM {}: {}", websocket.getRemoteSocketAddress(), content);
-		}
+		// if (LOGGER.isDebugEnabled()) {
+		// LOGGER.debug("FROM {}: {}", websocket.getRemoteSocketAddress(), content);
+		// }
 
 		gameMessageService.dispatch(GameMessageConverter.getGameMessage(content));
 	}

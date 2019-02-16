@@ -27,6 +27,11 @@ public class GameMessageServiceImpl implements GameMessageService {
 			return;
 		}
 
+		if (messageType == MessageType.GET_INFO) {
+			gameService.sendAdminInfo();
+			return;
+		}
+
 		if (messageType == MessageType.NEW_GAME) {
 			gameManagementService.createNewGame();
 			return;
