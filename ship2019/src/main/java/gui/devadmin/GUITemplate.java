@@ -403,14 +403,38 @@ public class GUITemplate {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					slider.setValue(0);
-					slider_1.setValue(1);
-					slider_2.setValue(2);
-					slider_3.setValue(3);
+					slider_1.setValue(0);
+					slider_2.setValue(0);
+					slider_3.setValue(0);
 
 					label.setText("0");
 					label_1.setText("0");
 					label_2.setText("0");
 					label_3.setText("0");
+
+					GameMessage gameMessage = new GameMessage();
+					gameMessage.setMessageType(MessageType.SPEED);
+					gameMessage.setContent("0");
+					gameMessage.setId(txtId.getText());
+					adminGUI.send(gameMessage);
+
+					gameMessage = new GameMessage();
+					gameMessage.setMessageType(MessageType.SPEED);
+					gameMessage.setContent("0");
+					gameMessage.setId(txtId_1.getText());
+					adminGUI.send(gameMessage);
+
+					gameMessage = new GameMessage();
+					gameMessage.setMessageType(MessageType.SPEED);
+					gameMessage.setContent("0");
+					gameMessage.setId(txtId_2.getText());
+					adminGUI.send(gameMessage);
+
+					gameMessage = new GameMessage();
+					gameMessage.setMessageType(MessageType.SPEED);
+					gameMessage.setContent("0");
+					gameMessage.setId(txtId_3.getText());
+					adminGUI.send(gameMessage);
 				} catch (Exception e1) {
 					getTextArea().append(e1.getMessage() + "\n");
 				}
