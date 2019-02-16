@@ -89,7 +89,14 @@ public class CarTestTemplate extends JFrame {
 				Thread thraed = new Thread(new Runnable() {
 
 					public void run() {
-						test();
+						try {
+							test();
+						} catch (InterruptedException e) {
+							textArea.append(e.getMessage() + "\n");
+							lblZakonczono.setText("E R R O R");
+							setAllWithSleep(0);
+							btnStartTest.setEnabled(true);
+						}
 					}
 				});
 
@@ -151,10 +158,10 @@ public class CarTestTemplate extends JFrame {
 	}
 
 	private void log(String msg) {
-		textArea.append(msg + "\n");
+		textArea.append(msg.replaceAll(", ", "\t") + "\n");
 	}
 
-	private void test() {
+	private void test() throws InterruptedException {
 		log("start");
 
 		String ip = "ws://localhost:8887";
@@ -208,139 +215,43 @@ public class CarTestTemplate extends JFrame {
 
 		chckbxNewCheckBox.setSelected(true);
 
-		gameMessage = new GameMessage();
-		gameMessage.setMessageType(MessageType.SPEED);
-		gameMessage.setContent("200");
-		gameMessage.setId("ID_1");
-		connector.send(gameMessage);
-
-		gameMessage = new GameMessage();
-		gameMessage.setMessageType(MessageType.SPEED);
-		gameMessage.setContent("200");
-		gameMessage.setId("ID_2");
-		connector.send(gameMessage);
-
-		gameMessage = new GameMessage();
-		gameMessage.setMessageType(MessageType.SPEED);
-		gameMessage.setContent("200");
-		gameMessage.setId("ID_3");
-		connector.send(gameMessage);
-
-		gameMessage = new GameMessage();
-		gameMessage.setMessageType(MessageType.SPEED);
-		gameMessage.setContent("200");
-		gameMessage.setId("ID_4");
-		connector.send(gameMessage);
+		set1(200);
+		set2(200);
+		set3(200);
+		set4(200);
 
 		log("1: 200, 2: 200, 3: 200, 4: 200");
 
-		try {
-			Thread.sleep(1500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(2500);
 
-		gameMessage = new GameMessage();
-		gameMessage.setMessageType(MessageType.SPEED);
-		gameMessage.setContent("0");
-		gameMessage.setId("ID_1");
-		connector.send(gameMessage);
-
-		gameMessage = new GameMessage();
-		gameMessage.setMessageType(MessageType.SPEED);
-		gameMessage.setContent("0");
-		gameMessage.setId("ID_2");
-		connector.send(gameMessage);
-
-		gameMessage = new GameMessage();
-		gameMessage.setMessageType(MessageType.SPEED);
-		gameMessage.setContent("0");
-		gameMessage.setId("ID_3");
-		connector.send(gameMessage);
-
-		gameMessage = new GameMessage();
-		gameMessage.setMessageType(MessageType.SPEED);
-		gameMessage.setContent("0");
-		gameMessage.setId("ID_4");
-		connector.send(gameMessage);
+		set1(0);
+		set2(0);
+		set3(0);
+		set4(0);
 
 		log("1: 0, 2: 0, 3: 0, 4: 0");
 
-		try {
-			Thread.sleep(1500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(1500);
 
 		chckbxDoTyu.setSelected(true);
 
-		gameMessage = new GameMessage();
-		gameMessage.setMessageType(MessageType.SPEED);
-		gameMessage.setContent("-200");
-		gameMessage.setId("ID_1");
-		connector.send(gameMessage);
-
-		gameMessage = new GameMessage();
-		gameMessage.setMessageType(MessageType.SPEED);
-		gameMessage.setContent("-200");
-		gameMessage.setId("ID_2");
-		connector.send(gameMessage);
-
-		gameMessage = new GameMessage();
-		gameMessage.setMessageType(MessageType.SPEED);
-		gameMessage.setContent("-200");
-		gameMessage.setId("ID_3");
-		connector.send(gameMessage);
-
-		gameMessage = new GameMessage();
-		gameMessage.setMessageType(MessageType.SPEED);
-		gameMessage.setContent("-200");
-		gameMessage.setId("ID_4");
-		connector.send(gameMessage);
+		set1(-200);
+		set2(-200);
+		set3(-200);
+		set4(-200);
 
 		log("1: -200, 2: -200, 3: -200, 4: -200");
 
-		try {
-			Thread.sleep(1500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(2500);
 
-		gameMessage = new GameMessage();
-		gameMessage.setMessageType(MessageType.SPEED);
-		gameMessage.setContent("0");
-		gameMessage.setId("ID_1");
-		connector.send(gameMessage);
-
-		gameMessage = new GameMessage();
-		gameMessage.setMessageType(MessageType.SPEED);
-		gameMessage.setContent("0");
-		gameMessage.setId("ID_2");
-		connector.send(gameMessage);
-
-		gameMessage = new GameMessage();
-		gameMessage.setMessageType(MessageType.SPEED);
-		gameMessage.setContent("0");
-		gameMessage.setId("ID_3");
-		connector.send(gameMessage);
-
-		gameMessage = new GameMessage();
-		gameMessage.setMessageType(MessageType.SPEED);
-		gameMessage.setContent("0");
-		gameMessage.setId("ID_4");
-		connector.send(gameMessage);
+		set1(0);
+		set2(0);
+		set3(0);
+		set4(0);
 
 		log("1: 0, 2: 0, 3: 0, 4: 0");
 
-		try {
-			Thread.sleep(1500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(1500);
 
 		chckbxZmianaPrdkoci.setSelected(true);
 
@@ -351,12 +262,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: 30, 2: 30, 3: 30, 4: 30");
 
-		try {
-			Thread.sleep(150);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(300);
 
 		set1(60);
 		set2(60);
@@ -365,12 +271,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: 60, 2: 60, 3: 60, 4: 60");
 
-		try {
-			Thread.sleep(150);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(300);
 
 		set1(90);
 		set2(90);
@@ -379,12 +280,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: 90, 2: 90, 3: 90, 4: 90");
 
-		try {
-			Thread.sleep(150);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(300);
 
 		set1(120);
 		set2(120);
@@ -393,12 +289,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: 120, 2: 120, 3: 120, 4: 120");
 
-		try {
-			Thread.sleep(150);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(300);
 
 		set1(150);
 		set2(150);
@@ -407,12 +298,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: 150, 2: 150, 3: 150, 4: 150");
 
-		try {
-			Thread.sleep(150);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(300);
 
 		set1(180);
 		set2(180);
@@ -421,12 +307,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: 180, 2: 180, 3: 180, 4: 180");
 
-		try {
-			Thread.sleep(150);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(300);
 
 		set1(200);
 		set2(200);
@@ -435,12 +316,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: 200, 2: 200, 3: 200, 4: 200");
 
-		try {
-			Thread.sleep(150);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(300);
 
 		set1(0);
 		set2(0);
@@ -449,12 +325,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: 0, 2: 0, 3: 0, 4: 0");
 
-		try {
-			Thread.sleep(1500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(1500);
 
 		set1(-200);
 		set2(-200);
@@ -463,12 +334,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: -200, 2: -200, 3: -200, 4: -200");
 
-		try {
-			Thread.sleep(150);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(300);
 
 		set1(-180);
 		set2(-180);
@@ -477,12 +343,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: -180, 2: -180, 3: -180, 4: -180");
 
-		try {
-			Thread.sleep(150);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(300);
 
 		set1(-150);
 		set2(-150);
@@ -491,12 +352,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: -150, 2: -150, 3: -150, 4: -150");
 
-		try {
-			Thread.sleep(150);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(300);
 
 		set1(-120);
 		set2(-120);
@@ -505,12 +361,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: -120, 2: -120, 3: -120, 4: -120");
 
-		try {
-			Thread.sleep(150);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(300);
 
 		set1(-90);
 		set2(-90);
@@ -519,12 +370,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: -90, 2: -90, 3: -90, 4: -90");
 
-		try {
-			Thread.sleep(150);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(300);
 
 		set1(-60);
 		set2(-60);
@@ -533,12 +379,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: -60, 2: -60, 3: -60, 4: -60");
 
-		try {
-			Thread.sleep(150);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(300);
 
 		set1(-30);
 		set2(-30);
@@ -547,12 +388,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: -30, 2: -30, 3: -30, 4: -30");
 
-		try {
-			Thread.sleep(150);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(300);
 
 		set1(0);
 		set2(0);
@@ -561,12 +397,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: 0, 2: 0, 3: 0, 4: 0");
 
-		try {
-			Thread.sleep(1500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(1500);
 
 		chckbxNewCheckBox_1.setSelected(true);
 
@@ -577,12 +408,7 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: 200, 2: 200, 3: 200, 4: 200");
 
-		try {
-			Thread.sleep(750);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(1250);
 
 		set1(0);
 		set2(0);
@@ -591,26 +417,16 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: 0, 2: 0, 3: 0, 4: 0");
 
-		try {
-			Thread.sleep(1500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(1500);
 
-		set1(75);
-		set2(-75);
-		set3(75);
-		set4(-75);
+		set1(105);
+		set2(-105);
+		set3(105);
+		set4(-105);
 
-		log("1: 75, 2: -75, 3: 75, 4: -75");
+		log("1: 105, 2: -105, 3: 105, 4: -105");
 
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(3000);
 
 		set1(0);
 		set2(0);
@@ -619,26 +435,16 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: 0, 2: 0, 3: 0, 4: 0");
 
-		try {
-			Thread.sleep(1500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(1500);
 
-		set1(-75);
-		set2(75);
-		set3(-75);
-		set4(75);
+		set1(-105);
+		set2(105);
+		set3(-105);
+		set4(105);
 
-		log("1: -75, 2: 75, 3: -75, 4: 75");
+		log("1: -105, 2: 105, 3: -105, 4: 105");
 
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(3000);
 
 		set1(0);
 		set2(0);
@@ -647,126 +453,81 @@ public class CarTestTemplate extends JFrame {
 
 		log("1: 0, 2: 0, 3: 0, 4: 0");
 
-		try {
-			Thread.sleep(1500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(1500);
 
 		chckbxWartociBrzegowe.setSelected(true);
 
-		set1(1);
+		set1(10);
 		set2(0);
 		set3(0);
 		set4(0);
 
-		log("1: 1, 2: 0, 3: 0, 4: 0");
+		log("1: 10, 2: 0, 3: 0, 4: 0");
 
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(500);
 
 		set1(0);
-		set2(1);
+		set2(10);
 		set3(0);
 		set4(0);
 
-		log("1: 0, 2: 1, 3: 0, 4: 0");
+		log("1: 0, 2: 10, 3: 0, 4: 0");
 
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(500);
 
 		set1(0);
 		set2(0);
-		set3(1);
+		set3(10);
 		set4(0);
 
-		log("1: 0, 2: 0, 3: 1, 4: 0");
+		log("1: 0, 2: 0, 3: 10, 4: 0");
 
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(500);
 
 		set1(0);
 		set2(0);
 		set3(0);
-		set4(1);
+		set4(10);
 
-		log("1: 0, 2: 0, 3: 0, 4: 1");
+		log("1: 0, 2: 0, 3: 0, 4: 10");
 
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(500);
 
 		set1(0);
 		set2(0);
 		set3(0);
-		set4(-1);
+		set4(-10);
 
-		log("1: 0, 2: 0, 3: 0, 4: -1");
+		log("1: 0, 2: 0, 3: 0, 4: -10");
 
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(500);
 
 		set1(0);
 		set2(0);
-		set3(-1);
-		set4(-1);
+		set3(-10);
+		set4(-10);
 
-		log("1: 0, 2: 0, 3: -1, 4: -1");
+		log("1: 0, 2: 0, 3: -10, 4: -10");
 
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(500);
 
 		set1(0);
-		set2(-1);
-		set3(-1);
-		set4(-1);
+		set2(-10);
+		set3(-10);
+		set4(-10);
 
-		log("1: 0, 2: -1, 3: -1, 4: -1");
+		log("1: 0, 2: -10, 3: -10, 4: -10");
 
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(500);
 
-		set1(-1);
-		set2(-1);
-		set3(-1);
-		set4(-1);
+		set1(-200);
+		set2(-200);
+		set3(200);
+		set4(200);
 
-		log("1: -1, 2: -1, 3: -1, 4: -1");
+		log("1: -200, 2: -200, 3: 200, 4: 200");
 
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(500);
 
 		chckbxKoniecGry.setSelected(true);
 
@@ -775,28 +536,18 @@ public class CarTestTemplate extends JFrame {
 		gameMessage.setId("admin");
 		connector.send(gameMessage);
 
-		try {
-			Thread.sleep(750);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(750);
 
 		chckbxNewCheckBox_2.setSelected(true);
 
-		set1(-75);
-		set2(75);
-		set3(-75);
-		set4(75);
+		set1(-105);
+		set2(105);
+		set3(-105);
+		set4(105);
 
-		log("1: -75, 2: 75, 3: -75, 4: 75");
+		log("1: -105, 2: 105, 3: -105, 4: 105");
 
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			log(e.getMessage());
-			e.printStackTrace();
-		}
+		Thread.sleep(1000);
 
 		log("end");
 
@@ -836,6 +587,20 @@ public class CarTestTemplate extends JFrame {
 		gameMessage.setContent(value + "");
 		gameMessage.setId("ID_4");
 		connector.send(gameMessage);
+	}
+
+	private void setAllWithSleep(long value) {
+		set1(value);
+		set2(value);
+		set3(value);
+		set4(value);
+
+		try {
+			Thread.sleep(150);
+		} catch (InterruptedException e) {
+			log(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 }
