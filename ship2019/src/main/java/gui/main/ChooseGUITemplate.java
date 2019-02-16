@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import gui.cartest.CarTestGUI;
 import gui.devadmin.AdminGUI;
 import gui.devadmin.GUITemplate;
 import gui.simpleclient.SimpleClient;
@@ -73,7 +74,11 @@ public class ChooseGUITemplate extends JFrame {
 		contentPane.add(btnSimpleClient);
 
 		JButton btnDevTestGui = new JButton("DEV CAR TEST");
-		btnDevTestGui.setEnabled(false);
+		btnDevTestGui.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new CarTestGUI();
+			}
+		});
 		btnDevTestGui.setForeground(Color.RED);
 		btnDevTestGui.setFont(new Font("Tahoma", Font.BOLD, 18));
 		btnDevTestGui.setBounds(15, 111, 459, 79);

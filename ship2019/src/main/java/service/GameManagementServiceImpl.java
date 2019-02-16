@@ -76,11 +76,53 @@ public class GameManagementServiceImpl implements GameManagementService {
 
 		LOGGER.info("#####################");
 
+		if (players.size() == 4) {
+			iterator = players.values().iterator();
+
+			Player next = iterator.next();
+
+			if (next.getId().equals("ID_1") || next.getId().equals("ID_2") || next.getId().equals("ID_3")
+					|| next.getId().equals("ID_4")) {
+				testMode();
+			}
+
+			setUptestMode(next);
+			setUptestMode(iterator.next());
+			setUptestMode(iterator.next());
+			setUptestMode(iterator.next());
+
+			LOGGER.info("TEST MODE");
+
+			LOGGER.info("#####################");
+
+		}
+
 		for (Player each : players.values()) {
 			LOGGER.info("Player {} ({}) has motors: {}", each.getName(), each.getId(), each.getMotorIds());
 		}
 
 		LOGGER.info("#####################");
+	}
+
+	private void testMode() {
+		Map<String, Player> players = game.getPlayers();
+
+		Iterator<Player> iterator = players.values().iterator();
+	}
+
+	private void setUptestMode(Player player) {
+		if (player.getId().equals("ID_1")) {
+			player.setMotorIds(Arrays.asList("A"));
+		}
+		if (player.getId().equals("ID_2")) {
+			player.setMotorIds(Arrays.asList("B"));
+		}
+		if (player.getId().equals("ID_3")) {
+			player.setMotorIds(Arrays.asList("C"));
+		}
+		if (player.getId().equals("ID_4")) {
+			player.setMotorIds(Arrays.asList("D"));
+		}
 	}
 
 }
