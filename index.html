@@ -79,12 +79,25 @@ window.onload = function() {
   
 };
 
-window.ondeviceorientation = function(event) {
+//window.ondeviceorientation = function(event) {
+//	var rotation = event.beta;
+//	var rotationCorrected = Math.round((rotation-45)*4.44);
+//	//document.getElementById('rotation-rate-beta').innerHTML = Math.round(event.rotationRate.beta);
+//	speedDiv.innerHTML = rotationCorrected;
+//	range.value = rotationCorrected;
+//}
+
+if (window.DeviceOrientationEvent) {
+	window.addEventListener("deviceorientation", deviceOrientationListener);
+} else {
+	alert("Sorry, your browser doesn't support Device Orientation");
+}
+
+function deviceOrientationListener(event) {
 	var rotation = event.beta;
-	var rotationCorrected = Math.round((rotation-45)*4.44);
-	//document.getElementById('rotation-rate-beta').innerHTML = Math.round(event.rotationRate.beta);
-	speedDiv.innerHTML = rotationCorrected;
+	var rotationCorrected = Math.Round((rotation-45)*4.44);
 	range.value = rotationCorrected;
+    speedDiv.innerHTML = rotationCorrected;
 }
 
 </script>
