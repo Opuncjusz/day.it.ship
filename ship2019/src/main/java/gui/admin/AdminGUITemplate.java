@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -199,6 +200,18 @@ public class AdminGUITemplate extends JFrame {
 
 		textField.setText(ADMIN_GAME_INFO.getTime());
 
+		textField_3.setBackground(new Color(200 - ADMIN_GAME_INFO.getMotorPowerAAsNumber(), 255,
+				200 - ADMIN_GAME_INFO.getMotorPowerAAsNumber()));
+
+		textField_6.setBackground(new Color(200 - ADMIN_GAME_INFO.getMotorPowerBAsNumber(), 255,
+				200 - ADMIN_GAME_INFO.getMotorPowerBAsNumber()));
+
+		textField_4.setBackground(new Color(200 - ADMIN_GAME_INFO.getMotorPowerCAsNumber(), 255,
+				200 - ADMIN_GAME_INFO.getMotorPowerCAsNumber()));
+
+		textField_5.setBackground(new Color(200 - ADMIN_GAME_INFO.getMotorPowerDAsNumber(), 255,
+				200 - ADMIN_GAME_INFO.getMotorPowerDAsNumber()));
+
 		setTop();
 	}
 
@@ -332,6 +345,7 @@ public class AdminGUITemplate extends JFrame {
 		panel_2.add(panel_3);
 
 		textField_3 = new JTextField();
+		textField_3.setBackground(UIManager.getColor("TextField.inactiveBackground"));
 		textField_3.setHorizontalAlignment(SwingConstants.CENTER);
 		textField_3.setEditable(false);
 		textField_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -364,21 +378,25 @@ public class AdminGUITemplate extends JFrame {
 		panel_2.add(textField_6);
 
 		label = new JLabel("0%");
+		label.setFont(new Font("Tahoma", Font.BOLD, 18));
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setBounds(15, 116, 146, 20);
 		panel_2.add(label);
 
 		label_1 = new JLabel("0%");
+		label_1.setFont(new Font("Tahoma", Font.BOLD, 18));
 		label_1.setHorizontalAlignment(SwingConstants.CENTER);
 		label_1.setBounds(15, 301, 146, 20);
 		panel_2.add(label_1);
 
 		label_2 = new JLabel("0%");
+		label_2.setFont(new Font("Tahoma", Font.BOLD, 18));
 		label_2.setHorizontalAlignment(SwingConstants.CENTER);
 		label_2.setBounds(328, 301, 146, 20);
 		panel_2.add(label_2);
 
 		label_3 = new JLabel("0%");
+		label_3.setFont(new Font("Tahoma", Font.BOLD, 18));
 		label_3.setHorizontalAlignment(SwingConstants.CENTER);
 		label_3.setBounds(328, 121, 146, 20);
 		panel_2.add(label_3);

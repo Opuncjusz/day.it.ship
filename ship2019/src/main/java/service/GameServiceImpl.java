@@ -106,10 +106,23 @@ public class GameServiceImpl implements GameService {
 		info.setMotorOwnerD("");
 
 		// info
-		info.setMotorPowerA(getMotorPowerAsText(carAdapter.getCarInformation().getSpeedOfMotorA()));
-		info.setMotorPowerB(getMotorPowerAsText(carAdapter.getCarInformation().getSpeedOfMotorB()));
-		info.setMotorPowerC(getMotorPowerAsText(carAdapter.getCarInformation().getSpeedOfMotorC()));
-		info.setMotorPowerD(getMotorPowerAsText(carAdapter.getCarInformation().getSpeedOfMotorD()));
+		int speedOfMotorA = carAdapter.getCarInformation().getSpeedOfMotorA();
+		int speedOfMotorB = carAdapter.getCarInformation().getSpeedOfMotorB();
+		int speedOfMotorC = carAdapter.getCarInformation().getSpeedOfMotorC();
+		int speedOfMotorD = carAdapter.getCarInformation().getSpeedOfMotorD();
+
+		info.setMotorPowerA(getMotorPowerAsText(speedOfMotorA));
+		info.setMotorPowerB(getMotorPowerAsText(speedOfMotorB));
+		info.setMotorPowerC(getMotorPowerAsText(speedOfMotorC));
+		info.setMotorPowerD(getMotorPowerAsText(speedOfMotorD));
+
+		info.setAllMotorsPower(
+				Math.abs(speedOfMotorA) + Math.abs(speedOfMotorB) + Math.abs(speedOfMotorC) + Math.abs(speedOfMotorD));
+
+		info.setMotorPowerAAsNumber(Math.abs(speedOfMotorA));
+		info.setMotorPowerBAsNumber(Math.abs(speedOfMotorB));
+		info.setMotorPowerCAsNumber(Math.abs(speedOfMotorC));
+		info.setMotorPowerDAsNumber(Math.abs(speedOfMotorD));
 
 		Map<String, Player> players = gameManagementService.getCurrentGame().getPlayers();
 

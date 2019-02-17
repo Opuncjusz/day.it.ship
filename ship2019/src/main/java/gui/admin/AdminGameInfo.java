@@ -20,6 +20,12 @@ public class AdminGameInfo {
 	private String motorOwnerD;
 
 	private String time;
+	private long allMotorsPower;
+
+	private int motorPowerAAsNumber;
+	private int motorPowerBAsNumber;
+	private int motorPowerCAsNumber;
+	private int motorPowerDAsNumber;
 
 	public String getPlayer1() {
 		return player1;
@@ -131,6 +137,46 @@ public class AdminGameInfo {
 
 	public void setMotorOwnerD(String motorOwnerD) {
 		this.motorOwnerD = motorOwnerD;
+	}
+
+	public void setAllMotorsPower(long allMotorsPower) {
+		this.allMotorsPower = allMotorsPower;
+	}
+
+	public long getAllMotorsPower() {
+		return allMotorsPower;
+	}
+
+	public int getMotorPowerAAsNumber() {
+		return motorPowerAAsNumber;
+	}
+
+	public void setMotorPowerAAsNumber(int motorPowerAAsNumber) {
+		this.motorPowerAAsNumber = motorPowerAAsNumber;
+	}
+
+	public int getMotorPowerBAsNumber() {
+		return motorPowerBAsNumber;
+	}
+
+	public void setMotorPowerBAsNumber(int motorPowerBAsNumber) {
+		this.motorPowerBAsNumber = motorPowerBAsNumber;
+	}
+
+	public int getMotorPowerCAsNumber() {
+		return motorPowerCAsNumber;
+	}
+
+	public void setMotorPowerCAsNumber(int motorPowerCAsNumber) {
+		this.motorPowerCAsNumber = motorPowerCAsNumber;
+	}
+
+	public int getMotorPowerDAsNumber() {
+		return motorPowerDAsNumber;
+	}
+
+	public void setMotorPowerDAsNumber(int motorPowerDAsNumber) {
+		this.motorPowerDAsNumber = motorPowerDAsNumber;
 	}
 
 }
