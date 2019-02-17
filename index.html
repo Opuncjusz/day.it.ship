@@ -1,5 +1,21 @@
 <script>
 
+if ('DeviceOrientationEvent' in window) {
+  window.addEventListener('deviceorientation', deviceOrientationHandler, false);
+} else {
+  document.getElementById('logoContainer').innerText = 'Device Orientation API not supported.';
+}
+
+function deviceOrientationHandler (eventData) {
+  var tiltLR = eventData.gamma;
+  var tiltFB = eventData.beta;
+  var dir = eventData.alpha;
+  
+  document.getElementById("doTiltLR").innerHTML = Math.round(tiltLR);
+  document.getElementById("doTiltFB").innerHTML = Math.round(tiltFB);
+  document.getElementById("doDirection").innerHTML = Math.round(dir);
+}
+
 window.onload = function() {
   var socketStatus = document.getElementById('status');
   
@@ -86,20 +102,6 @@ window.onload = function() {
 //	speedDiv.innerHTML = rotationCorrected;
 //	range.value = rotationCorrected;
 //}
-
-if (window.DeviceOrientationEvent) {
-	window.addEventListener("deviceorientation", deviceOrientationListener);
-} else {
-	alert("Sorry, your browser doesn't support Device Orientation");
-}
-
-function deviceOrientationListener(event) {
-	var rotation = event.beta;
-	//var rotationCorrected = Math.Round((rotation-45)*4.44);
-	//range.value = rotationCorrected;
-    //speedDiv.innerHTML = rotationCorrected;
-	speedDiv.innerHTML = event.beta;
-}
 
 </script>
 
@@ -233,6 +235,24 @@ button:hover {
   <br><button id="joinButton">Send Join message</button>
   <br><br><br>
   <input type="range" min="-200" max="200" value="0" step="1" id="range" style="width:400px"></input><div id="speed"></div>
-  
- 
+
+</div>
+
+<table class="table table-striped table-bordered">
+  <tr>
+    <td>Tilt Left/Right [gamma]</td>
+    <td id="doTiltLR"></td>
+  </tr>
+  <tr>
+    <td>Tilt Front/Back [beta]</td>
+    <td id="doTiltFB"></td>
+  </tr>
+  <tr>
+    <td>Direction [alpha]</td>
+    <td id="doDirection"></td>
+  </tr>
+</table>
+
+<div class="container" id="logoContainer">
+  <img src="https://www.w3.org/html/logo/downloads/HTML5_Badge_512.png" id="imgLogo">
 </div>
