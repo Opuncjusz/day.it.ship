@@ -184,6 +184,8 @@ public class GameServiceImpl implements GameService {
 			info.setPlayer4("NOT CONNECTED");
 		}
 
+		info.setGameStatus(gameManagementService.getCurrentGame().getGameStatus().toString());
+
 		info.setTime(getCurrentGameTime(gameManagementService.getCurrentGameTime()));
 
 		AdminGUITemplate.ADMIN_GAME_INFO = info;
