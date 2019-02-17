@@ -34,14 +34,15 @@ public class GameServiceImpl implements GameService {
 
 	public void setSpeed(GameMessage message) {
 		if (gameManagementService.getCurrentGame().getGameStatus() != GameStatus.STARTED) {
-			LOGGER.warn("Gra zakonczona. Aktualizacja predkosci zostala odrzucona");
+			// LOGGER.warn("Gra zakonczona. Aktualizacja predkosci zostala odrzucona");
 			return;
 		}
 
 		Player player = gameManagementService.getCurrentGame().getPlayers().get(message.getId());
 
-		LOGGER.info("Gracz {} wyslal speed {} dla motora {}", player.getName(), message.getContent(),
-				player.getMotorIds());
+		// LOGGER.info("Gracz {} wyslal speed {} dla motora {}", player.getName(),
+		// message.getContent(),
+		// player.getMotorIds());
 
 		for (String motor : player.getMotorIds()) {
 			if ("A".equals(motor)) {

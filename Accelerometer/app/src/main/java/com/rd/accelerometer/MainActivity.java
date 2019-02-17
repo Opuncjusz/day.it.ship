@@ -13,8 +13,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rd.accelerometer.client.Connector;
+import com.rd.accelerometer.websocket.to.GameMessage;
+import com.rd.accelerometer.websocket.type.MessageType;
 
 public class MainActivity extends Activity implements SensorEventListener {
 
@@ -33,6 +36,8 @@ public class MainActivity extends Activity implements SensorEventListener {
     private EditText address, nick;
     Button connect;
 
+    private String deviceID;
+
     private Connector connector;
     private boolean connected = false;
 
@@ -41,6 +46,9 @@ public class MainActivity extends Activity implements SensorEventListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializeViews();
+
+        deviceID = Settings.Secure.getString(this.getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
 
         //initialize rotation rotationVectorSensor
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -73,30 +81,70 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     public void connect() {
         if (!connected) {
+            if(nick.getText().toString().length() == 0) {
+                Toast.makeText(this, "Za krótki nick", Toast.LENGTH_SHORT);
+                return;
+            }
+
             String addr = address.getText().toString();
+
+            if(addr.length() == 0) {
+                Toast.makeText(this, "Nieprawidłowy adres", Toast.LENGTH_SHORT);
+                return;
+            }
+
             try {
                 connector.run(addr);
                 Thread.sleep(1000);
             } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if(!connector.isOpen()) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(!connector.isOpen()) {
+                Toast.makeText(this, "Problem z połaczeniem", Toast.LENGTH_SHORT);
                 return;
             }
+
+            Toast.makeText(this, "Dodawanie gracza do gry...", Toast.LENGTH_SHORT);
+
+            sendJoinRequest();
+
+            try {
+                Thread.sleep(1100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if(!connector.isOpen()) {
+                Toast.makeText(this, "Nie udało się dołączyć do gry", Toast.LENGTH_SHORT);
+                return;
+            }
+
             connected = true;
             connect.setText("Disconnect");
         } else {
             try {
                 connector.close();
             } catch (Exception e) {
-                return;
+                e.printStackTrace();
+                //return;
             }
             connected = false;
             connect.setText("Connect");
         }
+
+
     }
 
-    private String getDeviceID() {
-        return Settings.Secure.getString(this.getApplicationContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-    }
+
 
     //onResume() register the sensor for listening the events
     protected void onResume() {
@@ -119,12 +167,42 @@ public class MainActivity extends Activity implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
 
         if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR && connected) {
+            if(!update()) {
+                return;
+            }
+
             displayCurrentSensorValue();
             speedValue = displayCurrentSpeed();
             xSensorValue = event.values[0];
-            vibrate(speedValue);
+
+            if(connector.isOpen()) {
+                sendSpeed(speedValue);
+            }
+            //vibrate(speedValue);
         }
 
+    }
+
+    private void sendJoinRequest() {
+        GameMessage gameMessage = new GameMessage();
+        gameMessage.setMessageType(MessageType.JOIN_TO_GAME);
+        gameMessage.setContent(nick.getText().toString());
+        gameMessage.setId(deviceID);
+        connector.send(gameMessage);
+    }
+
+    private void sendSpeed(long speed) {
+        if(!connector.isOpen()) {
+            connected = false;
+            connect.setText("Connect");
+            return;
+        }
+
+        GameMessage gameMessage = new GameMessage();
+        gameMessage.setMessageType(MessageType.SPEED);
+        gameMessage.setContent(speed + "");
+        gameMessage.setId(deviceID);
+        connector.send(gameMessage);
     }
 
     public void displayCurrentSensorValue() {
@@ -137,6 +215,7 @@ public class MainActivity extends Activity implements SensorEventListener {
         if (speedValue < MAX_REVERSE_SPEED) speedValue = MAX_REVERSE_SPEED;
         String speedString = Float.toString(speedValue);
         speedString = speedString.substring(0, speedString.indexOf("."));
+
         currentSpeed.setText(speedString);
         return Integer.valueOf(speedString);
     }
@@ -144,9 +223,21 @@ public class MainActivity extends Activity implements SensorEventListener {
     // if the change in the accelerometer value is big enough, then vibrateAcc!
     // our threshold is MaxValue/2
     public void vibrate(int speed) {
+
         if (Math.abs(speed) > SPEED_ALERT) {
             v.vibrate(VIBRATION_TIME);
         }
+    }
+
+    private long lastUpdate = 0;
+
+    private boolean update() {
+        if((System.currentTimeMillis() - 100) > lastUpdate) {
+            lastUpdate = System.currentTimeMillis();
+            return true;
+        }
+
+        return false;
     }
 
 }

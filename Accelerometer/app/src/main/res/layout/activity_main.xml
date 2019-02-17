@@ -41,7 +41,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:textSize="15dp"
-        android:text="ws://localhost:8887"
+        android:text="ws://192.168.0.129:8887"
         android:inputType="text"/>
 
     <Button

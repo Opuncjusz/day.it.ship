@@ -18,6 +18,8 @@ public class Connector {
     private WebSocketClient websocket;
 
     public boolean run(String uri) throws URISyntaxException {
+        System.out.println("Lacze z ... " + uri);
+
         websocket = new WebSocketClient(new URI(uri)) {
 
             @Override
@@ -42,6 +44,18 @@ public class Connector {
         };
 
         websocket.connect();
+
+
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return websocket.isOpen();
+    }
+
+    public boolean isOpen() {
         return websocket.isOpen();
     }
 
