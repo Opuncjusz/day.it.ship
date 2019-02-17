@@ -27,6 +27,8 @@ public class GameServiceImpl implements GameService {
 
 	private CarAdapter carAdapter;
 
+	private Thread thread;
+
 	public GameServiceImpl(GameManagementService gameManagementService) {
 		this.gameManagementService = gameManagementService;
 		this.carAdapter = new CarAdapter();
@@ -69,12 +71,26 @@ public class GameServiceImpl implements GameService {
 					gameManagementService.getCurrentGame().getGameStatus());
 		}
 
-		Thread thread = new Thread(new Runnable() {
+		if (thread != null) {
+			return;
+		}
+
+		thread = new Thread(new Runnable() {
 			public void run() {
 				LOGGER.info("startConnectionWithCar...");
 
-				while (gameManagementService.getCurrentGame().getGameStatus() == GameStatus.STARTED) {
-					carAdapter.sendInfoToCar();
+				while (true) {
+
+					if (gameManagementService.getCurrentGame().getGameStatus() == GameStatus.STARTED) {
+						carAdapter.sendInfoToCar();
+					} else {
+						carAdapter.getCarInformation().setSpeedOfMotorA(0);
+						carAdapter.getCarInformation().setSpeedOfMotorB(0);
+						carAdapter.getCarInformation().setSpeedOfMotorC(0);
+						carAdapter.getCarInformation().setSpeedOfMotorD(0);
+
+						carAdapter.sendInfoToCar();
+					}
 
 					try {
 						Thread.sleep(TIMER_MS);
@@ -83,14 +99,7 @@ public class GameServiceImpl implements GameService {
 					}
 				}
 
-				carAdapter.getCarInformation().setSpeedOfMotorA(0);
-				carAdapter.getCarInformation().setSpeedOfMotorB(0);
-				carAdapter.getCarInformation().setSpeedOfMotorC(0);
-				carAdapter.getCarInformation().setSpeedOfMotorD(0);
-
-				carAdapter.sendInfoToCar();
-
-				LOGGER.info("startConnectionWithCar... STOP");
+				// LOGGER.info("startConnectionWithCar... STOP");
 			}
 		});
 
