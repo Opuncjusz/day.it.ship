@@ -118,8 +118,8 @@ public class GameManagementServiceImpl implements GameManagementService {
 		}
 
 		if (players.size() == 2) {
-			iterator.next().setMotorIds(Arrays.asList("A", "B"));
-			iterator.next().setMotorIds(Arrays.asList("C", "D"));
+			iterator.next().setMotorIds(Arrays.asList("A", "C"));
+			iterator.next().setMotorIds(Arrays.asList("B", "D"));
 		}
 
 		if (players.size() == 1) {
