@@ -200,17 +200,37 @@ public class AdminGUITemplate extends JFrame {
 
 		textField.setText(ADMIN_GAME_INFO.getTime());
 
-		textField_3.setBackground(new Color(200 - ADMIN_GAME_INFO.getMotorPowerAAsNumber(), 255,
-				200 - ADMIN_GAME_INFO.getMotorPowerAAsNumber()));
+		if (ADMIN_GAME_INFO.getMotorPowerA().startsWith("-")) {
+			textField_3.setBackground(new Color(255, 225 - ADMIN_GAME_INFO.getMotorPowerAAsNumber(),
+					225 - ADMIN_GAME_INFO.getMotorPowerAAsNumber()));
+		} else {
+			textField_3.setBackground(new Color(200 - ADMIN_GAME_INFO.getMotorPowerAAsNumber(), 255,
+					200 - ADMIN_GAME_INFO.getMotorPowerAAsNumber()));
+		}
 
-		textField_6.setBackground(new Color(200 - ADMIN_GAME_INFO.getMotorPowerBAsNumber(), 255,
-				200 - ADMIN_GAME_INFO.getMotorPowerBAsNumber()));
+		if (ADMIN_GAME_INFO.getMotorPowerB().startsWith("-")) {
+			textField_6.setBackground(new Color(255, 225 - ADMIN_GAME_INFO.getMotorPowerBAsNumber(),
+					225 - ADMIN_GAME_INFO.getMotorPowerBAsNumber()));
+		} else {
+			textField_6.setBackground(new Color(200 - ADMIN_GAME_INFO.getMotorPowerBAsNumber(), 255,
+					200 - ADMIN_GAME_INFO.getMotorPowerBAsNumber()));
+		}
 
-		textField_4.setBackground(new Color(200 - ADMIN_GAME_INFO.getMotorPowerCAsNumber(), 255,
-				200 - ADMIN_GAME_INFO.getMotorPowerCAsNumber()));
+		if (ADMIN_GAME_INFO.getMotorPowerC().startsWith("-")) {
+			textField_4.setBackground(new Color(255, 225 - ADMIN_GAME_INFO.getMotorPowerCAsNumber(),
+					225 - ADMIN_GAME_INFO.getMotorPowerCAsNumber()));
+		} else {
+			textField_4.setBackground(new Color(200 - ADMIN_GAME_INFO.getMotorPowerCAsNumber(), 255,
+					200 - ADMIN_GAME_INFO.getMotorPowerCAsNumber()));
+		}
 
-		textField_5.setBackground(new Color(200 - ADMIN_GAME_INFO.getMotorPowerDAsNumber(), 255,
-				200 - ADMIN_GAME_INFO.getMotorPowerDAsNumber()));
+		if (ADMIN_GAME_INFO.getMotorPowerD().startsWith("-")) {
+			textField_5.setBackground(new Color(255, 225 - ADMIN_GAME_INFO.getMotorPowerDAsNumber(),
+					225 - ADMIN_GAME_INFO.getMotorPowerDAsNumber()));
+		} else {
+			textField_5.setBackground(new Color(200 - ADMIN_GAME_INFO.getMotorPowerDAsNumber(), 255,
+					200 - ADMIN_GAME_INFO.getMotorPowerDAsNumber()));
+		}
 
 		setTop();
 	}
