@@ -80,7 +80,7 @@ window.onload = function() {
 };
 
 window.ondevicemotion = function(event) {
-	var rotation = event.rotationRate.beta;
+	var rotation = event.beta;
 	var rotationCorrected = Math.round((rotation-45)*4.44);
 	//document.getElementById('rotation-rate-beta').innerHTML = Math.round(event.rotationRate.beta);
 	speedDiv.innerHTML = rotationCorrected;
