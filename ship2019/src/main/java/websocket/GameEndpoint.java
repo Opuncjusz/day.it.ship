@@ -1,5 +1,7 @@
 package websocket;
 
+import java.net.InetSocketAddress;
+
 import org.java_websocket.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +26,17 @@ public class GameEndpoint extends Endpoint {
 		// LOGGER.debug("FROM {}: {}", websocket.getRemoteSocketAddress(), content);
 		// }
 
-		gameMessageService.dispatch(GameMessageConverter.getGameMessage(content));
+		gameMessageService.dispatch(GameMessageConverter.getGameMessage(content), websocket);
+	}
+
+	public void disconnect(InetSocketAddress remoteSocketAddress) {
+		for (WebSocket each : getConnections()) {
+			if (each.getRemoteSocketAddress().equals(remoteSocketAddress)) {
+				LOGGER.warn("Rozlaczam " + each.getRemoteSocketAddress());
+				each.close();
+				break;
+			}
+		}
 	}
 
 }

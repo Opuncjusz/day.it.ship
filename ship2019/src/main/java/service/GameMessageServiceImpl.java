@@ -1,9 +1,12 @@
 package service;
 
+import org.java_websocket.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import main.Main;
 import model.Player;
+import websocket.GameException;
 import websocket.to.GameMessage;
 import websocket.type.MessageType;
 
@@ -19,7 +22,7 @@ public class GameMessageServiceImpl implements GameMessageService {
 		gameService = new GameServiceImpl(gameManagementService);
 	}
 
-	public void dispatch(GameMessage message) {
+	public void dispatch(GameMessage message, WebSocket websocket) {
 		MessageType messageType = message.getMessageType();
 
 		if (messageType == MessageType.SPEED) {
@@ -41,7 +44,13 @@ public class GameMessageServiceImpl implements GameMessageService {
 			Player player = new Player();
 			player.setId(message.getId());
 			player.setName(message.getContent());
-			gameManagementService.addPlayer(player);
+
+			try {
+				gameManagementService.addPlayer(player);
+			} catch (GameException e) {
+				Main.GAME_ENDPOINT.disconnect(websocket.getRemoteSocketAddress());
+			}
+
 			return;
 		}
 
@@ -57,7 +66,6 @@ public class GameMessageServiceImpl implements GameMessageService {
 		}
 
 		LOGGER.error("UNKNOWN MESSAGE TYPE! {}", messageType);
-		throw new IllegalArgumentException("Unknown message type");
 	}
 
 }

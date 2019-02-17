@@ -22,7 +22,7 @@ import websocket.type.MessageType;
 
 public class SimpleClientTemplate extends JFrame {
 
-	public static Connector connector;
+	public Connector connector;
 
 	private String playerId;
 	private int currentPower = 0;
@@ -46,6 +46,7 @@ public class SimpleClientTemplate extends JFrame {
 			public void run() {
 				try {
 					SimpleClientTemplate frame = new SimpleClientTemplate();
+					frame.connector = new Connector();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

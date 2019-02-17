@@ -19,6 +19,7 @@ import main.Main;
 import model.Game;
 import model.GameStatus;
 import model.Player;
+import websocket.GameException;
 
 public class GameManagementServiceImpl implements GameManagementService {
 
@@ -44,9 +45,15 @@ public class GameManagementServiceImpl implements GameManagementService {
 	public void addPlayer(Player player) {
 		if (game.getGameStatus() != GameStatus.PREPAIR) {
 			LOGGER.error("Zapisy do gry juz sie zakonczyly!");
-		} else {
-			game.getPlayers().put(player.getId(), player);
+			throw new GameException();
 		}
+
+		if (game.getPlayers().size() >= 4) {
+			LOGGER.error("Zapisanych jest juz komplet graczy!");
+			throw new GameException();
+		}
+
+		game.getPlayers().put(player.getId(), player);
 
 	}
 
@@ -72,7 +79,11 @@ public class GameManagementServiceImpl implements GameManagementService {
 
 		game.setGameTime(Duration.between(game.getStartDate(), game.getEndDate()).toMillis());
 
-		allGames.add(game);
+		if (game.getPlayers().size() > 0) {
+			allGames.add(game);
+		} else {
+			LOGGER.error("Gra odbyla sie bez graczy!");
+		}
 
 		disconnectWithCurrentClients();
 
