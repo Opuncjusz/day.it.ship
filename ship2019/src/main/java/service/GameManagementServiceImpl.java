@@ -42,7 +42,12 @@ public class GameManagementServiceImpl implements GameManagementService {
 	}
 
 	public void addPlayer(Player player) {
-		game.getPlayers().put(player.getId(), player);
+		if (game.getGameStatus() != GameStatus.PREPAIR) {
+			LOGGER.error("Zapisy do gry juz sie zakonczyly!");
+		} else {
+			game.getPlayers().put(player.getId(), player);
+		}
+
 	}
 
 	public void startGame() {

@@ -3,11 +3,8 @@ package gui.admin;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,18 +12,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import client.AdminConnector;
 import model.Game;
@@ -49,10 +42,6 @@ public class AdminGUITemplate extends JFrame {
 	private JTextField textField_4;
 	private JTextField textField_5;
 	private JTextField textField_6;
-	private JPanel panel_4;
-	private JCheckBox chckbxNewCheckBox;
-	private JSlider slider;
-	private JLabel lblGameSpeed;
 	private JLabel label;
 	private JLabel label_1;
 	private JLabel label_2;
@@ -104,6 +93,18 @@ public class AdminGUITemplate extends JFrame {
 	private JTextField textField_38;
 	private JTextField textField_39;
 	private JLabel label_10;
+	private JLabel label_11;
+	private JTextField textField_40;
+	private JTextField textField_41;
+	private JTextField textField_42;
+	private JTextField textField_43;
+	private JTextField textField_44;
+	private JLabel label_12;
+	private JTextField textField_45;
+	private JTextField textField_46;
+	private JTextField textField_47;
+	private JTextField textField_48;
+	private JTextField textField_49;
 
 	/**
 	 * Launch the application.
@@ -233,6 +234,14 @@ public class AdminGUITemplate extends JFrame {
 			if (top.get(6) != null) {
 				setTop7(top.get(6));
 			}
+
+			if (top.get(7) != null) {
+				setTop8(top.get(7));
+			}
+
+			if (top.get(8) != null) {
+				setTop9(top.get(8));
+			}
 		} catch (IndexOutOfBoundsException e) {
 			// ...
 		}
@@ -245,7 +254,7 @@ public class AdminGUITemplate extends JFrame {
 		setTitle("GAME PANEL");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1378, 733);
+		setBounds(100, 100, 1378, 639);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -307,13 +316,13 @@ public class AdminGUITemplate extends JFrame {
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Game", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(15, 111, 1342, 568);
+		panel_1.setBounds(15, 111, 1342, 480);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(null, "Car", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_2.setBounds(840, 213, 487, 339);
+		panel_2.setBounds(840, 127, 487, 339);
 		panel_1.add(panel_2);
 		panel_2.setLayout(null);
 
@@ -374,51 +383,6 @@ public class AdminGUITemplate extends JFrame {
 		label_3.setBounds(328, 121, 146, 20);
 		panel_2.add(label_3);
 
-		panel_4 = new JPanel();
-		panel_4.setBorder(new TitledBorder(null, "Rules", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_4.setBounds(15, 32, 1034, 152);
-		panel_1.add(panel_4);
-		panel_4.setLayout(null);
-
-		chckbxNewCheckBox = new JCheckBox("FUEL LIMIT");
-		chckbxNewCheckBox.setBounds(876, 28, 135, 29);
-		panel_4.add(chckbxNewCheckBox);
-
-		slider = new JSlider();
-		slider.setValue(100);
-		slider.setMinimum(50);
-		slider.setBounds(214, 28, 269, 23);
-		panel_4.add(slider);
-
-		slider.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				Point p = e.getPoint();
-				double percent = p.x / ((double) slider.getWidth());
-				int range = slider.getMaximum() - slider.getMinimum();
-				double newVal = range * percent;
-				int result = (int) (slider.getMinimum() + newVal);
-				slider.setValue(result);
-				lblGameSpeed.setText("Game speed " + result + "%");
-			}
-
-		});
-
-		slider.addChangeListener(new ChangeListener() {
-
-			public void stateChanged(ChangeEvent e) {
-				JSlider source = (JSlider) e.getSource();
-				if (source.getValueIsAdjusting()) {
-					lblGameSpeed.setText("Game speed " + source.getValue() + "%");
-				}
-			}
-		});
-
-		lblGameSpeed = new JLabel("Game speed 100%");
-		lblGameSpeed.setBounds(15, 31, 184, 20);
-		panel_4.add(lblGameSpeed);
-
 		btnStartNewGame = new JButton("START GAME");
 		btnStartNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -432,7 +396,7 @@ public class AdminGUITemplate extends JFrame {
 			}
 		});
 		btnStartNewGame.setEnabled(false);
-		btnStartNewGame.setBounds(1075, 75, 252, 29);
+		btnStartNewGame.setBounds(1075, 37, 252, 29);
 		panel_1.add(btnStartNewGame);
 
 		button = new JButton("END GAME");
@@ -447,7 +411,7 @@ public class AdminGUITemplate extends JFrame {
 				button.setEnabled(false);
 			}
 		});
-		button.setBounds(1075, 120, 252, 29);
+		button.setBounds(1075, 82, 252, 29);
 		panel_1.add(button);
 
 		btnNewGame = new JButton("NEW GAME");
@@ -460,7 +424,7 @@ public class AdminGUITemplate extends JFrame {
 				btnStartNewGame.setEnabled(true);
 			}
 		});
-		btnNewGame.setBounds(1075, 28, 252, 29);
+		btnNewGame.setBounds(840, 40, 206, 29);
 		panel_1.add(btnNewGame);
 
 		textField = new JTextField();
@@ -468,13 +432,13 @@ public class AdminGUITemplate extends JFrame {
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 		textField.setText("00:00:00");
 		textField.setEditable(false);
-		textField.setBounds(1075, 165, 252, 26);
+		textField.setBounds(840, 85, 206, 26);
 		panel_1.add(textField);
 		textField.setColumns(10);
 
 		panel_5 = new JPanel();
 		panel_5.setBorder(new TitledBorder(null, "TOP", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_5.setBounds(15, 200, 810, 352);
+		panel_5.setBounds(15, 28, 810, 438);
 		panel_1.add(panel_5);
 		panel_5.setLayout(null);
 
@@ -818,6 +782,104 @@ public class AdminGUITemplate extends JFrame {
 		label_10 = new JLabel("7.");
 		label_10.setBounds(15, 310, 69, 26);
 		panel_5.add(label_10);
+
+		label_11 = new JLabel("8.");
+		label_11.setBounds(15, 352, 69, 26);
+		panel_5.add(label_11);
+
+		textField_40 = new JTextField();
+		textField_40.setText("");
+		textField_40.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_40.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textField_40.setEditable(false);
+		textField_40.setColumns(10);
+		textField_40.setBounds(40, 352, 127, 26);
+		panel_5.add(textField_40);
+
+		textField_41 = new JTextField();
+		textField_41.setText("");
+		textField_41.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_41.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textField_41.setEditable(false);
+		textField_41.setColumns(10);
+		textField_41.setBounds(182, 352, 146, 26);
+		panel_5.add(textField_41);
+
+		textField_42 = new JTextField();
+		textField_42.setText("");
+		textField_42.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_42.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textField_42.setEditable(false);
+		textField_42.setColumns(10);
+		textField_42.setBounds(338, 352, 146, 26);
+		panel_5.add(textField_42);
+
+		textField_43 = new JTextField();
+		textField_43.setText("");
+		textField_43.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_43.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textField_43.setEditable(false);
+		textField_43.setColumns(10);
+		textField_43.setBounds(492, 352, 146, 26);
+		panel_5.add(textField_43);
+
+		textField_44 = new JTextField();
+		textField_44.setText("");
+		textField_44.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_44.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textField_44.setEditable(false);
+		textField_44.setColumns(10);
+		textField_44.setBounds(649, 352, 146, 26);
+		panel_5.add(textField_44);
+
+		label_12 = new JLabel("9.");
+		label_12.setBounds(15, 394, 69, 26);
+		panel_5.add(label_12);
+
+		textField_45 = new JTextField();
+		textField_45.setText("");
+		textField_45.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_45.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textField_45.setEditable(false);
+		textField_45.setColumns(10);
+		textField_45.setBounds(40, 394, 127, 26);
+		panel_5.add(textField_45);
+
+		textField_46 = new JTextField();
+		textField_46.setText("");
+		textField_46.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_46.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textField_46.setEditable(false);
+		textField_46.setColumns(10);
+		textField_46.setBounds(182, 394, 146, 26);
+		panel_5.add(textField_46);
+
+		textField_47 = new JTextField();
+		textField_47.setText("");
+		textField_47.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_47.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textField_47.setEditable(false);
+		textField_47.setColumns(10);
+		textField_47.setBounds(338, 394, 146, 26);
+		panel_5.add(textField_47);
+
+		textField_48 = new JTextField();
+		textField_48.setText("");
+		textField_48.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_48.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textField_48.setEditable(false);
+		textField_48.setColumns(10);
+		textField_48.setBounds(492, 394, 146, 26);
+		panel_5.add(textField_48);
+
+		textField_49 = new JTextField();
+		textField_49.setText("");
+		textField_49.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_49.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textField_49.setEditable(false);
+		textField_49.setColumns(10);
+		textField_49.setBounds(649, 394, 146, 26);
+		panel_5.add(textField_49);
 	}
 
 	private void setTop1(Game game) {
@@ -874,6 +936,22 @@ public class AdminGUITemplate extends JFrame {
 		textField_37.setText(getPlayer2(game.getPlayers()));
 		textField_36.setText(getPlayer3(game.getPlayers()));
 		textField_35.setText(getPlayer4(game.getPlayers()));
+	}
+
+	private void setTop8(Game game) {
+		textField_40.setText(game.getGameTimeAsString());
+		textField_41.setText(getPlayer1(game.getPlayers()));
+		textField_42.setText(getPlayer2(game.getPlayers()));
+		textField_43.setText(getPlayer3(game.getPlayers()));
+		textField_44.setText(getPlayer4(game.getPlayers()));
+	}
+
+	private void setTop9(Game game) {
+		textField_45.setText(game.getGameTimeAsString());
+		textField_46.setText(getPlayer1(game.getPlayers()));
+		textField_47.setText(getPlayer2(game.getPlayers()));
+		textField_48.setText(getPlayer3(game.getPlayers()));
+		textField_49.setText(getPlayer4(game.getPlayers()));
 	}
 
 	private String getPlayer1(Map<String, Player> map) {
