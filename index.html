@@ -20,7 +20,7 @@ window.onload = function() {
   var gameIdTextField = document.getElementById('gameId');
   var IPTextField = document.getElementById('IP');
   var userNameTextField = document.getElementById('userName');
-  var socket = new WebSocket(IPTextField.value);
+  var socket;
   var speedDiv = document.getElementById("speed");
   var range = document.getElementById("range");
 
@@ -42,8 +42,7 @@ window.onload = function() {
   }
   
   connectButton.onclick = function(e) {
-	//socket = new WebSocket(IPTextField.value);
-	var socket = new WebSocket(IPTextField.value);
+	socket = new WebSocket(IPTextField.value);
   
 	  socket.onerror = function(error) {
 		console.log('WebSocket Error: ' + error);
