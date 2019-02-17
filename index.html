@@ -95,9 +95,10 @@ if (window.DeviceOrientationEvent) {
 
 function deviceOrientationListener(event) {
 	var rotation = event.beta;
-	var rotationCorrected = Math.Round((rotation-45)*4.44);
-	range.value = rotationCorrected;
-    speedDiv.innerHTML = rotationCorrected;
+	//var rotationCorrected = Math.Round((rotation-45)*4.44);
+	//range.value = rotationCorrected;
+    //speedDiv.innerHTML = rotationCorrected;
+	speedDiv.innerHTML = event.beta;
 }
 
 </script>
