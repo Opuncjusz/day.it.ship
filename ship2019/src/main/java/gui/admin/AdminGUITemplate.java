@@ -369,7 +369,7 @@ public class AdminGUITemplate extends JFrame {
 		textField_3.setHorizontalAlignment(SwingConstants.CENTER);
 		textField_3.setEditable(false);
 		textField_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		textField_3.setBounds(15, 79, 146, 26);
+		textField_3.setBounds(328, 250, 146, 26);
 		panel_2.add(textField_3);
 		textField_3.setColumns(10);
 
@@ -377,7 +377,7 @@ public class AdminGUITemplate extends JFrame {
 		textField_4.setHorizontalAlignment(SwingConstants.CENTER);
 		textField_4.setEditable(false);
 		textField_4.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		textField_4.setBounds(15, 259, 146, 26);
+		textField_4.setBounds(15, 76, 146, 26);
 		panel_2.add(textField_4);
 		textField_4.setColumns(10);
 
@@ -386,7 +386,7 @@ public class AdminGUITemplate extends JFrame {
 		textField_5.setEditable(false);
 		textField_5.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textField_5.setColumns(10);
-		textField_5.setBounds(328, 259, 146, 26);
+		textField_5.setBounds(328, 76, 146, 26);
 		panel_2.add(textField_5);
 
 		textField_6 = new JTextField();
@@ -394,31 +394,31 @@ public class AdminGUITemplate extends JFrame {
 		textField_6.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textField_6.setEditable(false);
 		textField_6.setColumns(10);
-		textField_6.setBounds(328, 79, 146, 26);
+		textField_6.setBounds(15, 250, 146, 26);
 		panel_2.add(textField_6);
 
 		label = new JLabel("0%");
 		label.setFont(new Font("Tahoma", Font.BOLD, 18));
 		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setBounds(15, 116, 146, 20);
+		label.setBounds(328, 287, 146, 20);
 		panel_2.add(label);
 
 		label_1 = new JLabel("0%");
 		label_1.setFont(new Font("Tahoma", Font.BOLD, 18));
 		label_1.setHorizontalAlignment(SwingConstants.CENTER);
-		label_1.setBounds(15, 301, 146, 20);
+		label_1.setBounds(15, 118, 146, 20);
 		panel_2.add(label_1);
 
 		label_2 = new JLabel("0%");
 		label_2.setFont(new Font("Tahoma", Font.BOLD, 18));
 		label_2.setHorizontalAlignment(SwingConstants.CENTER);
-		label_2.setBounds(328, 301, 146, 20);
+		label_2.setBounds(328, 118, 146, 20);
 		panel_2.add(label_2);
 
 		label_3 = new JLabel("0%");
 		label_3.setFont(new Font("Tahoma", Font.BOLD, 18));
 		label_3.setHorizontalAlignment(SwingConstants.CENTER);
-		label_3.setBounds(328, 121, 146, 20);
+		label_3.setBounds(15, 292, 146, 20);
 		panel_2.add(label_3);
 
 		btnStartNewGame = new JButton("START GAME");
